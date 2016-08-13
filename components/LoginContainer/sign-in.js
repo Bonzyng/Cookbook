@@ -25,7 +25,7 @@ class SignIn extends Component {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.titleContainer}>
                     <Text style={styles.title}>
-                        Welcome To Brenda!
+                        Cookbook
                     </Text>
                 </View>
                 <View style={styles.loginContainer}>
@@ -65,31 +65,30 @@ class SignIn extends Component {
                         style={styles.secondaryButton}
                         textStyle={{color: 'rgba(255, 255, 255, 0.8)'}}
                         onPress={this.props.click}>
-                        Don't have an account? Sign Up!
+                        Don't have an account? Sign up!
                     </Button>
                 </View>
             </ScrollView>
         )
-
     }
 }
 
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
-        flex: 1,
+        flex: 1
     },
     loginContainer: {
         marginTop: 50,
-        width: 300,
+        width: 300
     },
     titleContainer: {
         alignItems: 'center',
-        marginTop: 100,
+        marginTop: 100
     },
     title: {
         color: 'white',
-        fontSize: 25,
+        fontSize: 25
     },
     signIn: {
         marginTop: 20
@@ -100,7 +99,7 @@ const styles = StyleSheet.create({
     },
     errorContainer: {
         marginTop: 10,
-        alignItems: 'center',
+        alignItems: 'center'
     },
     errorMessage: {
         color: '#FF6161'

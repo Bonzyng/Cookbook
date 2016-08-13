@@ -1,15 +1,13 @@
-/**
- * Created by aviad on 6/20/2016.
- */
-
 import React, {Component} from 'react'
 import {Text, StyleSheet, ActivityIndicator, View} from 'react-native'
 import Spinner from 'react-native-loading-spinner-overlay';
+
 import SignInContainer from '../LoginContainer/sign-in-container'
 import CookbookContainer from './../Cookbook/cookbook-container'
 
 import auth from './../../stores/auth';
 import api from './../../stores/api';
+
 import {createConnector} from 'cartiv';
 const connect = createConnector(React);
 
@@ -31,14 +29,16 @@ class AuthContainer extends Component {
         return (
             this.state.isAuth ?
                 // Authenticated
-                <CookbookContainer user={this.state.user}/>
+                <View>
+                    <CookbookContainer user={this.state.user}/>
+                </View>
                 :
                 // Not authenticated
-                <div>
+                <View>
                     {spinner}
                     <SignInContainer error={this.state.error} stripErrors={api.auth.stripErrors.bind(this)}
                                      signIn={api.auth.signIn.bind(this)} signUp={api.auth.signUp.bind(this)}/>
-                </div>
+                </View>
         )
     }
 }

@@ -13,12 +13,12 @@ class SignInContainer extends Component {
 
     userHasAccount() {
         this.setState({hasAccount: true});
-        this.props.clearErrors();
+        this.props.stripErrors();
     }
 
     userDoesntHaveAccount() {
         this.setState({hasAccount: false});
-        this.props.clearErrors();
+        this.props.stripErrors();
     }
 
     render() {

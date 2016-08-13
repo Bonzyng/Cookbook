@@ -1,9 +1,14 @@
-import React, {Componenet} from 'react';
+import React, {Component} from 'react';
+import {View, Text} from 'react-native';
 
-class CookbookContainer extends Componenet {
+class CookbookContainer extends Component {
     render() {
-        return(
-            <div>Cookbook</div>
+        return (
+            <View>
+                <Text>
+                    Cookbook
+                </Text>
+            </View>
         )
     }
 }

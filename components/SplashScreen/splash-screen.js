@@ -33,6 +33,7 @@ class SplashScreen extends Component {
     }
 
     render() {
+        console.log('obj', this);
         return (
             this.state.done ?
                 // If done -> Show all nested
