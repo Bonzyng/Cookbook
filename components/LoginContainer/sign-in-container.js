@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 
 import SignIn from './sign-in'
 import SignUp from './sign-up'
+import stylesheet from '../../styles/global-styles';
 
 class SignInContainer extends Component {
     constructor(props) {
@@ -24,10 +25,10 @@ class SignInContainer extends Component {
     render() {
         return (
             this.state.hasAccount ?
-                <SignIn error={this.props.error} signIn={this.props.signIn}
+                <SignIn style={stylesheet.container} error={this.props.error} signIn={this.props.signIn}
                         click={this.userDoesntHaveAccount.bind(this)}/>
                 :
-                <SignUp error={this.props.error} signUp={this.props.signUp} click={this.userHasAccount.bind(this)}/>
+                <SignUp style={stylesheet.container} error={this.props.error} signUp={this.props.signUp} click={this.userHasAccount.bind(this)}/>
         )
     }
 }

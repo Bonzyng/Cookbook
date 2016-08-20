@@ -4,8 +4,11 @@ import {
     Text,
     View,
     Image,
-    Animated
+    Animated,
+    Dimensions
 } from 'react-native';
+
+import stylesheet from '../../styles/global-styles';
 
 class SplashScreen extends Component {
     constructor(props) {
@@ -33,7 +36,6 @@ class SplashScreen extends Component {
     }
 
     render() {
-        console.log('obj', this);
         return (
             this.state.done ?
                 // If done -> Show all nested
@@ -41,28 +43,31 @@ class SplashScreen extends Component {
                 :
                 // Display Splash Screen
                 (
-                    <Animated.View style={[{opacity: this.state.fadeAnim},styles.container]}>
-                        <Image style={styles.logo} source={this.props.logo} resizeMode='contain'/>
+                    <Animated.View
+                        style={[{opacity: this.state.fadeAnim}, stylesheet.container, styles.container]}>
+                        <View style={styles.spacer}/>
+                        <Image style={styles.logo} source={this.props.logo} resizeMode={Image.resizeMode.contain}/>
                     </Animated.View>
                 )
         );
     }
 }
 
+let {height, width} = Dimensions.get('window');
+
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
-        flex: 1
-    },
-    gradient: {
-        flexDirection: 'column',
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         alignItems: 'center'
+    },
+    spacer: {
+        height: height * 0.3
     },
     logo: {
         flex: 1,
-        width: 300
+        width: width * 0.8
     }
 });
 

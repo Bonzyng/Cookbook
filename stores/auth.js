@@ -26,7 +26,7 @@ let auth = createStore(
     {
         api: api,
         name: 'auth',
-        actions: ['signUp', 'signIn', 'initFirebaseListener', 'stripErrors']
+        actions: ['signUp', 'signIn', 'signOut', 'initFirebaseListener', 'stripErrors']
     },
     // Store definition
     {
@@ -41,23 +41,23 @@ let auth = createStore(
         initFirebaseListener(){
             this.setState({loading: true});
             fb.auth().onAuthStateChanged((user)=> {
-                    if (user) {
-                        // User is signed in.
-                        let sanitizedUser = sanitizeUserData(user);
-                        this.setState({
-                            user: sanitizedUser,
-                            isAuth: true,
-                            error: false
-                        });
-                    } else {
-                        // No user is signed in.
-                        this.setState({
-                            isAuth: false,
-                            error: false
-                        });
-                    }
-                    this.setState({loading: false});
-                });
+                if (user) {
+                    // User is signed in.
+                    let sanitizedUser = sanitizeUserData(user);
+                    this.setState({
+                        user: sanitizedUser,
+                        isAuth: true,
+                        error: false
+                    });
+                } else {
+                    // No user is signed in.
+                    this.setState({
+                        isAuth: false,
+                        error: false
+                    });
+                }
+                this.setState({loading: false});
+            });
         },
         stripErrors(){
             this.setState({
@@ -100,7 +100,7 @@ let auth = createStore(
             });
         },
         signIn(email, password){
-            console.log('signin', email, password);
+            console.log('sign in', email, password);
             this.setState({loading: true});
             fb.auth().signInWithEmailAndPassword(email, password).then((payload)=> {
                 // Observer (Firebase listener) should notify about login so basically nothing...
@@ -112,6 +112,14 @@ let auth = createStore(
                 console.log(error.message);
             }).then(()=> {
                 this.setState({loading: false});
+            });
+        },
+        signOut(){
+            console.log('sign out');
+            fb.auth().signOut().then(()=> {
+                // Success
+            }, (err)=> {
+                console.log(err);
             });
         }
     });

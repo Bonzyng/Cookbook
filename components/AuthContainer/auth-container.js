@@ -29,9 +29,7 @@ class AuthContainer extends Component {
         return (
             this.state.isAuth ?
                 // Authenticated
-                <View>
-                    <CookbookContainer user={this.state.user}/>
-                </View>
+                <CookbookContainer user={this.state.user}/>
                 :
                 // Not authenticated
                 <View>
