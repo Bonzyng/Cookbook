@@ -1,12 +1,14 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
 import {
     View,
     Text,
     Navigator,
     StyleSheet
-} from 'react-native'
-import {Button} from 'apsl-react-native-button'
-import ComponentsConfig from '../component-config'
+} from 'react-native';
+import {Button} from 'apsl-react-native-button';
+import ComponentsConfig from '../components-config';
+
+import {colors, dims} from '../../../styles/global-styles';
 
 class NavigatorContainer extends Component {
     constructor(props) {
@@ -63,10 +65,9 @@ class NavigatorContainer extends Component {
 const styles = StyleSheet.create({
     navigationBar: {
         flex: 1,
-        // flexDirection:'row',
         padding: 0,
-        backgroundColor: 'rgba(216, 27, 96, 1)',
-        height: 61,
+        backgroundColor: colors.leather,
+        height: dims.height * 0.1,
         shadowColor: 'black',
         shadowOpacity: 1.0,
         elevation: 8,
@@ -74,30 +75,29 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 2
     },
     leftNavButton: {
-        color: 'white'
+        color: colors.parchmentLight
     },
     rightNavButton: {
-        color: 'white'
+        color: colors.parchmentLight
     },
     navButtonContainer: {
         flex: 1,
-        width: 50,
+        width: dims.width * 0.15,
+        borderRadius: dims.width * 0.15,
         alignItems: 'center',
         justifyContent: 'center'
     },
     navTitleContainer: {
         flex: 1,
-        flexDirection: 'row',
-        width: 220,
-        justifyContent: 'center',
-        // alignItems: 'center',
-        marginTop: 5
+        width: dims.width * 0.6,
+        justifyContent: 'center'
     },
     navTitle: {
         textAlign: 'center',
         fontWeight: '400',
         fontSize: 26,
-        color: 'white'
+        color: colors.parchmentLight
     }
 });
-export default NavigatorContainer
+
+export default NavigatorContainer;

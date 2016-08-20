@@ -1,9 +1,10 @@
-import React, {Component} from 'react'
-import {Text, StyleSheet, ActivityIndicator, View} from 'react-native'
+import React, {Component} from 'react';
+import {Text, StyleSheet, ActivityIndicator, View} from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 
-import SignInContainer from '../LoginContainer/sign-in-container'
-import CookbookContainer from './../Cookbook/cookbook-container'
+import SignInContainer from '../LoginContainer/sign-in-container';
+import NavigatorContainer from '../Navigation/NavigatorContainer/navigator-container';
+import CookbookContainer from '../Cookbook/cookbook-container';
 
 import auth from './../../stores/auth';
 import api from './../../stores/api';
@@ -29,11 +30,10 @@ class AuthContainer extends Component {
         return (
             this.state.isAuth ?
                 // Authenticated
-                <CookbookContainer user={this.state.user}/>
+                <NavigatorContainer user={this.state.user}/>
                 :
                 // Not authenticated
                 <View>
-                    {spinner}
                     <SignInContainer error={this.state.error} stripErrors={api.auth.stripErrors.bind(this)}
                                      signIn={api.auth.signIn.bind(this)} signUp={api.auth.signUp.bind(this)}/>
                 </View>

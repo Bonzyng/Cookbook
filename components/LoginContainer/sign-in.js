@@ -34,7 +34,7 @@ class SignIn extends Component {
                         dense={true}
                         label={'Email'}
                         highlightColor={colors.brownPen}
-                        keyboardType={'default'}
+                        keyboardType={'email-address'}
                         textColor={colors.brownPen}
                         labelColor={colors.brownPen}
                         ref="email"

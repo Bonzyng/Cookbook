@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 class Route {
     constructor(index, title, name, component, generateLeftButtonFunc, generateRightButtonFunc) {

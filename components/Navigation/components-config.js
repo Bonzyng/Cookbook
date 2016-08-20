@@ -1,5 +1,5 @@
-import React from 'react'
-import {CookbookRoute} from '../Cookbook/cookbook-container'
+import React from 'react';
+import {CookbookRoute} from '../Cookbook/cookbook-container';
 
 let initialRoute = CookbookRoute;
 
