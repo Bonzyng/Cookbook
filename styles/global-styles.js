@@ -16,12 +16,19 @@ const colors = {
     leatherLight: '#bca08f'
 };
 
+const colorsRgba = {
+    brownPen: 'rgba(60, 0, 0, 1)',
+    parchmentLight: 'rgba(241, 241, 212, 1)',
+    leather: 'rgba(145, 108, 85, 1)',
+    leatherLight: 'rgba(188, 160, 143, 1)'
+};
+
 const dims = {
     height: Dimensions.get('window').height,
     width: Dimensions.get('window').width
-}
+};
 
 const logo = require('../assets/logo.png');
 
-export {colors, dims, logo};
+export {colors, colorsRgba, dims, logo};
 export default stylesheet;

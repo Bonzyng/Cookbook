@@ -9,9 +9,12 @@ import {
     DrawerLayoutAndroid
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import ActionButton from 'react-native-action-button';
 
+import {AddRecipeRoute} from '../Recipe/add-recipe';
 import Route from '../Navigation/route';
 import ControlPanel from '../Navigation/control-panel';
+import ScrollableList from './list-view-recipes';
 import {colors, dims} from '../../styles/global-styles';
 
 let drawerHandlerPtr, cookbookContext;
@@ -43,10 +46,13 @@ class CookbookContainer extends Component {
                 drawerWidth={300}
                 drawerPosition={DrawerLayoutAndroid.positions.Left}
                 renderNavigationView={() => <ControlPanel user={this.props.user} />}>
-                <ScrollView style={{backgroundColor: colors.parchmentLight, height: dims.height, flex: 1}}>
-                    <Text style={{marginTop: 100, margin: 10, fontSize: 15, textAlign: 'center'}}>Hello</Text>
-                    <Text style={{margin: 10, fontSize: 15, textAlign: 'center'}}>World!</Text>
-                </ScrollView>
+                <View style={{marginTop: dims.height * 0.1}}/>
+                {ScrollableList}
+                <ActionButton
+                    buttonColor={colors.leather}
+                    icon={<Icon name='plus' size={25} color={colors.parchmentLight}/>}
+                    onPress={() => {this.props.navigator.push(AddRecipeRoute)}}
+                />
             </DrawerLayoutAndroid>
         )
     }
