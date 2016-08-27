@@ -82,5 +82,3 @@ const styles = StyleSheet.create({
 
 let CookbookRoute = new Route(0, 'Cookbook', 'cookbook', <CookbookContainer />, leftButtonFunc, rightButtonFunc);
 export {CookbookRoute};
-
-export default CookbookContainer; // TODO Remove this

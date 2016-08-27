@@ -32,9 +32,10 @@ class RecipeList extends Component {
     _navigateToRecipe(name) {
         alert(name);
     }
-    
+
     render() {
-        return <ScrollableList style={{backgroundColor: colors.parchmentLight}} data={recipes} renderRow={(data) => <RecipeListItem {...data} navigateTo={this._navigateToRecipe.bind(this)} />}/>
+        return <ScrollableList style={{backgroundColor: colors.parchmentLight}} data={recipes}
+                               renderRow={(data) => <RecipeListItem {...data} navigateTo={this._navigateToRecipe.bind(this)} />}/>
     }
 }
 
