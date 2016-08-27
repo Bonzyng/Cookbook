@@ -11,10 +11,10 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ActionButton from 'react-native-action-button';
 
-import {AddRecipeRoute} from '../Recipe/add-recipe';
+import {AddRecipeRoute} from '../Recipe/add-recipe-container';
 import Route from '../Navigation/route';
 import ControlPanel from '../Navigation/control-panel';
-import ScrollableList from './list-view-recipes';
+import RecipeList from './recipe-list';
 import {colors, dims} from '../../styles/global-styles';
 
 let drawerHandlerPtr, cookbookContext;
@@ -47,7 +47,7 @@ class CookbookContainer extends Component {
                 drawerPosition={DrawerLayoutAndroid.positions.Left}
                 renderNavigationView={() => <ControlPanel user={this.props.user} />}>
                 <View style={{marginTop: dims.height * 0.1}}/>
-                {ScrollableList}
+                <RecipeList navigator={this.props.navigator}/>
                 <ActionButton
                     buttonColor={colors.leather}
                     icon={<Icon name='plus' size={25} color={colors.parchmentLight}/>}

@@ -17,7 +17,7 @@ import {colors, dims, colorsRgba} from '../../styles/global-styles';
 
 let drawerHandlerPtr, cookbookContext;
 
-class RecipeContainer extends Component {
+class AddRecipeContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -50,8 +50,7 @@ class RecipeContainer extends Component {
 function leftButtonFunc(route, navigator, index, navState) {
     return <TouchableHighlight
         underlayColor='transparent'
-        style={styles.button}
-        onPress={drawerHandlerPtr.bind(cookbookContext)}>
+        style={styles.button}>
         <Icon name='bars' size={30} color={colors.parchmentLight} style={{margin: 0, padding: 0}}/>
     </TouchableHighlight>;
 }
@@ -67,5 +66,5 @@ const styles = StyleSheet.create({
     }
 });
 
-let AddRecipeRoute = new Route(1, 'Add Recipe', 'add-recipe', <RecipeContainer />, leftButtonFunc, rightButtonFunc);
+let AddRecipeRoute = new Route(1, 'Add Recipe', 'add-recipe', <AddRecipeContainer />, leftButtonFunc, rightButtonFunc);
 export {AddRecipeRoute};

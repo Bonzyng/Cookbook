@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, Text, Button, TouchableHighlight} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {RecipeRoute} from '../Recipe/recipe-container';
 
 import {dims, colors} from '../../styles/global-styles';
 
-class ListItem extends Component {
+class RecipeListItem extends Component {
     constructor(props) {
         super(props);
 
@@ -16,8 +16,9 @@ class ListItem extends Component {
 
     _toggleSelect() {
         this.setState({
-            selected: !this.state.selected
-        })
+            selected: !this.state.selected,
+            num: !this.state.selected ? 1 : 0
+        });
     }
 
     _decrease() {
@@ -36,40 +37,50 @@ class ListItem extends Component {
         })
     }
 
+    // TODO Limit text lengths so we don't wrap and exist the item area
     render() {
         return (
             this.state.selected ?
                 <View style={styles.row}>
                     <TouchableHighlight style={styles.button} onPress={this._decrease.bind(this)}>
-                        <Text style={{fontSize: 23}}>-</Text>
+                        <Text style={styles.buttonText}>-</Text>
                     </TouchableHighlight>
-                    <Text>{this.state.num}</Text>
+                    <Text style={styles.num}>{this.state.num}</Text>
                     <TouchableHighlight style={styles.button} onPress={this._increase.bind(this)}>
-                        <Text style={{fontSize: 23}}>+</Text>
+                        <Text style={styles.buttonText}>+</Text>
+                    </TouchableHighlight>
+                    <TouchableHighlight onPress={() => this.props.navigateTo(this.props.name)}>
+                        <View style={[styles.data, styles.row]}>
+                            <Text style={styles.recipeName}>{this.props.name}</Text>
+                        </View>
                     </TouchableHighlight>
                 </View>
                 :
                 <View style={styles.row}>
                     <TouchableHighlight style={styles.button} onPress={this._toggleSelect.bind(this)}>
-                        <Text style={{fontSize: 23}}>{this.props.name.charAt(0)}</Text>
+                        <Text style={styles.buttonText}>{this.props.name.charAt(0)}</Text>
                     </TouchableHighlight>
-                    <View style={styles.data}>
-                        <Text style={styles.recipeName}>{this.props.name}</Text>
-                        <View style={{flexDirection: 'row'}}>
-                            <View style={{flex: 1, alignItems: 'flex-start'}}>
-                                <Text>Category: {this.props.category}</Text>
+                    <TouchableHighlight style={{flex: 1}} underlayColor={colors.leatherLight} onPress={() => this.props.navigateTo(this.props.name)}>
+                        <View style={[styles.row, {alignSelf: 'stretch'}]}>
+                            <View style={styles.data}>
+                                <Text style={styles.recipeName}>{this.props.name}</Text>
+                                <View style={{flexDirection: 'row'}}>
+                                    <View style={{flex: 1, alignItems: 'flex-start'}}>
+                                        <Text>Category: {this.props.category}</Text>
+                                    </View>
+                                    <View style={{flex: 1, alignItems: 'flex-end'}}>
+                                        <Text>Servings: {this.props.servings}</Text>
+                                    </View>
+                                </View>
                             </View>
-                            <View style={{flex: 1, alignItems: 'flex-end'}}>
-                                <Text>Servings: {this.props.servings}</Text>
+                            <View style={styles.timeArea}>
+                                <Text style={styles.time}>{this.props.time}</Text>
+                                <View style={{flexDirection: 'column', justifyContent: 'flex-end'}}>
+                                    <Text style={styles.minutes}>min.</Text>
+                                </View>
                             </View>
                         </View>
-                    </View>
-                    <View style={styles.timeArea}>
-                        <Text style={styles.time}>{this.props.time}</Text>
-                        <View style={{flexDirection: 'column', justifyContent: 'flex-end'}}>
-                            <Text style={styles.minutes}>min.</Text>
-                        </View>
-                    </View>
+                    </TouchableHighlight>
                 </View>
         )
     }
@@ -83,6 +94,8 @@ var styles = StyleSheet.create({
         height: dims.height * 0.1,
         borderColor: colors.leather,
         borderBottomWidth: 0.5,
+        alignItems: 'center',
+        marginTop: 1,
     },
     data: {
         marginLeft: dims.width * 0.02,
@@ -99,9 +112,12 @@ var styles = StyleSheet.create({
         justifyContent: 'center',
         elevation: 5,
     },
+    buttonText: {
+        fontSize: 23,
+        color: colors.parchmentLight
+    },
     recipeName: {
         fontSize: 25,
-
     },
     timeArea: {
         width: dims.width * 0.15,
@@ -110,12 +126,14 @@ var styles = StyleSheet.create({
         justifyContent: 'center',
     },
     minutes: {
-
         marginLeft: dims.height * 0.005
     },
     time: {
         fontSize: 25,
+    },
+    num: {
+        fontSize: 25,
     }
 });
 
-export default ListItem;
+export default RecipeListItem;

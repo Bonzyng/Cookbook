@@ -8,15 +8,15 @@ import {logo} from './../styles/global-styles'
 
 class App extends Component {
     render() {
-        return (
-            <CookbookContainer />
-        );
-        // TODO Return this to normal
         // return (
-        //     <SplashScreen logo={logo} duration={0}>
-        //         <AuthContainer />
-        //     </SplashScreen>
+        //     <CookbookContainer />
         // );
+        // TODO Return this to normal
+        return (
+            <SplashScreen logo={logo} duration={0}>
+                <AuthContainer />
+            </SplashScreen>
+        );
     }
 }
 

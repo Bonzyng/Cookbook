@@ -3,12 +3,23 @@ import {
     View,
     Text,
     Navigator,
-    StyleSheet
+    StyleSheet,
+    BackAndroid
 } from 'react-native';
 import {Button} from 'apsl-react-native-button';
 import ComponentsConfig from '../components-config';
 
 import {colors, dims} from '../../../styles/global-styles';
+
+let _navigator; // we fill this up upon on first navigation.
+
+BackAndroid.addEventListener('hardwareBackPress', () => {
+    if (_navigator.getCurrentRoutes().length === 1) {
+        return false;
+    }
+    _navigator.pop();
+    return true;
+});
 
 class NavigatorContainer extends Component {
     constructor(props) {
@@ -16,6 +27,7 @@ class NavigatorContainer extends Component {
     }
 
     _sceneLogic(route, navigator) {
+        _navigator = navigator;
         // return route.component
         let newUser = React.cloneElement(route.component, {user: this.props.user, navigator: navigator});
         return newUser;
@@ -58,6 +70,7 @@ class NavigatorContainer extends Component {
                 renderScene={this._sceneLogic.bind(this)}
                 navigationBar={this._navigationBar}
                 configureScene={() => ({ ...Navigator.SceneConfigs.FloatFromBottom, gestures: {}})}
+                style={{backgroundColor: colors.parchmentLight}}
             />
         )
     }
