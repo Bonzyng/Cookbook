@@ -4,7 +4,6 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 import SignInContainer from '../LoginContainer/sign-in-container';
 import NavigatorContainer from '../Navigation/NavigatorContainer/navigator-container';
-import CookbookContainer from '../Cookbook/cookbook-container';
 
 import auth from './../../stores/auth';
 import api from './../../stores/api';
