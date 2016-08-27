@@ -69,7 +69,14 @@ function leftButtonFunc(route, navigator, index, navState) {
     )
 }
 function rightButtonFunc(route, navigator, index, navState) {
-    return <Icon name='plus' size={30} color={colors.parchmentLight}/>
+    return (
+        <TouchableHighlight
+            underlayColor='transparent'
+            style={styles.button}
+            onPress={() => alert('I do nothing')}>
+            <Icon name='plus' size={30} color={colors.parchmentLight}/>
+        </TouchableHighlight>
+    )
 }
 
 const styles = StyleSheet.create({
