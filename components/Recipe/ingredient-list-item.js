@@ -1,7 +1,13 @@
 import React, {Component} from 'react';
-import {Text, View, StyleSheet, TouchableHighlight, TextInput} from 'react-native';
+import {Text, View, StyleSheet, TouchableHighlight, TextInput, Picker} from 'react-native';
 
 import {dims, colors} from '../../styles/global-styles';
+
+const ingredientUnits = {
+    kg: 'Kg',
+    gram: 'Grams',
+    unit: 'Units'
+}
 
 class IngredientListItem extends Component {
     constructor(props) {
@@ -17,9 +23,9 @@ class IngredientListItem extends Component {
     render() {
         return (
             <View style={styles.row}>
-                <TextInput style={styles.textInput}
-                           onChangeText={(name) => this.setState({name})}
-                           value={this.state.name}/>
+                <Text style={styles.textInput}>{this.state.amount}</Text>
+                <Text style={[styles.textInput, {marginLeft: dims.width * -0.1}]}>{this.state.unit}</Text>
+                <Text style={styles.textInput}>{this.state.name}</Text>
             </View>
         );
     }
@@ -30,7 +36,9 @@ const styles = StyleSheet.create({
         backgroundColor: colors.parchmentLight,
         flexDirection: 'row',
         flex: 1,
-        alignItems: 'center'
+        alignItems: 'center',
+        marginRight: dims.width * 0.1,
+        marginLeft: dims.width * 0.1,
     },
     textInput: {
         flex: 1,

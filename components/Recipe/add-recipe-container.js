@@ -12,12 +12,14 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Route from '../Navigation/route';
 import IngredientListItem from './ingredient-list-item';
+import AddIngredient from './add-ingredient';
 import {colors, dims} from '../../styles/global-styles';
 
+// TODO Remove. Moved to ingredient-list-item
 const ingredientUnits = {
-    kg: 'kg',
-    gram: 'gram',
-    unit: 'unit'
+    kg: 'Kg',
+    gram: 'Grams',
+    unit: 'Units'
 }
 
 // TODO Remove
@@ -51,12 +53,13 @@ class AddRecipeContainer extends Component {
         }
     }
 
-    _addIngredient() {
-        let temp = index ++;
-        this.state.ingredientsArray.push(temp);
-        this.setState({
-            ingredientsArray: this.state.ingredientsArray
-        });
+    _addIngredient(ingredient) {
+        // let temp = index ++;
+        // this.state.ingredientsArray.push(temp);
+        // this.setState({
+        //     ingredientsArray: this.state.ingredientsArray
+        // });
+        alert('Ingredient added! ' + ingredient.name + ingredient.amount + ingredient.unit);
     }
 
     _addRecipe() {
@@ -116,6 +119,7 @@ class AddRecipeContainer extends Component {
 
         return (
             <ScrollView style={styles.body}>
+                <AddIngredient ref={'ADD_INGREDIENT'} addIngredient={this._addIngredient.bind(this)}/>
                 <View style={{marginTop: dims.height * 0.1}}/>
 
                 <View style={styles.row}>
@@ -193,7 +197,7 @@ class AddRecipeContainer extends Component {
                     {ingredients}
                     <View style={[styles.row, {marginLeft: dims.width * 0.05}]}>
                         <TouchableHighlight style={styles.button}
-                                            onPress={() => alert('Adding ingredient row!')}
+                                            onPress={() => this.refs['ADD_INGREDIENT'].setModalVisible(true)}
                                             underlayColor={colors.leatherLight}>
                             <Text style={styles.buttonText}>+</Text>
                         </TouchableHighlight>
