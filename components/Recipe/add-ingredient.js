@@ -9,7 +9,7 @@ const ingredientUnits = {
     unit: 'Units'
 }
 
-class Button extends React.Component {
+class Button extends Component {
     state = {
         active: false,
     };
@@ -77,27 +77,39 @@ class AddIngredient extends Component {
                     onRequestClose={() => {this.setModalVisible(false)}}
                 >
 
-                        <View style={[styles.container, {backgroundColor: 'rgba(0, 0, 0, 0.5)'}]}>
-                            <View style={[styles.innerContainer, {backgroundColor: colors.parchmentLight, padding: 20}]}>
-                                <Picker style={{width: dims.width * 0.25}}
-                                        hitSlop={{top: 0, bottom: 15, right: 10, left: 10}}
-                                        mode='dropdown'
-                                        selectedValue={this.state.unit}
-                                        onValueChange={(unit) => this.setState({unit})}>
-                                    <Picker.Item label={ingredientUnits.kg} value={ingredientUnits.kg}/>
-                                    <Picker.Item label={ingredientUnits.gram} value={ingredientUnits.gram}/>
-                                    <Picker.Item label={ingredientUnits.unit} value={ingredientUnits.unit}/>
-                                </Picker>
+                    <View style={[styles.container, {backgroundColor: 'rgba(0, 0, 0, 0.5)'}]}>
+                        <View style={[styles.innerContainer, {backgroundColor: colors.parchmentLight, padding: 20}]}>
+                            <View style={[styles.row, {width: dims.width * 0.5}]}>
+                                <Text style={styles.text}>Name: </Text>
                                 <TextInput style={styles.textInput}
                                            onChangeText={(name) => this.setState({name})}
                                            value={this.state.name}/>
-                                <Button
-                                    onPress={this._addIngredient.bind(this)}
-                                    style={styles.modalButton}>
-                                    Add
-                                </Button>
                             </View>
+
+                            <View style={[styles.row, {width: dims.width * 0.5}]}>
+                                <Text style={styles.text}>Amount: </Text>
+                                <TextInput style={styles.textInput}
+                                           onChangeText={(amount) => this.setState({amount})}
+                                           value={this.state.amount}/>
+                            </View>
+
+                            <Picker style={{width: dims.width * 0.25, borderWidth: 1, borderColor: 'black'}}
+                                    hitSlop={{top: 0, bottom: 15, right: 10, left: 10}}
+                                    mode='dropdown'
+                                    selectedValue={this.state.unit}
+                                    onValueChange={(unit) => this.setState({unit})}>
+                                <Picker.Item label={ingredientUnits.kg} value={ingredientUnits.kg}/>
+                                <Picker.Item label={ingredientUnits.gram} value={ingredientUnits.gram}/>
+                                <Picker.Item label={ingredientUnits.unit} value={ingredientUnits.unit}/>
+                            </Picker>
+
+                            <Button
+                                onPress={this._addIngredient.bind(this)}
+                                style={styles.modalButton}>
+                                Add
+                            </Button>
                         </View>
+                    </View>
 
                 </Modal>
             </View>

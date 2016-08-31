@@ -46,7 +46,6 @@ class AddRecipeContainer extends Component {
             prepTime: 0,
             difficulty: difficulties.medium,
             servings: 0,
-            ingredients: {},
             tags: {},
             instructions: '',
             ingredientsArray: fakeIngredients,
@@ -54,12 +53,9 @@ class AddRecipeContainer extends Component {
     }
 
     _addIngredient(ingredient) {
-        // let temp = index ++;
-        // this.state.ingredientsArray.push(temp);
-        // this.setState({
-        //     ingredientsArray: this.state.ingredientsArray
-        // });
-        alert('Ingredient added! ' + ingredient.name + ingredient.amount + ingredient.unit);
+        this.setState({
+            ingredientsArray: [...this.state.ingredientsArray, ingredient]
+        });
     }
 
     _addRecipe() {
