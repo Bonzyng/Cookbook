@@ -30,13 +30,21 @@ const recipes = [
 ];
 
 class RecipeList extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            recipes: recipes
+        }
+    }
+    
     _navigateToRecipe(name) {
         alert(name);
     }
 
     // TODO use renderSeparator and height: StyleSheet.hairlineWidth. See https://medium.com/@spencer_carli/react-native-basics-how-to-use-the-listview-component-a0ec44cf1fe8#.8qrpnww2h
     render() {
-        return <ScrollableList style={{backgroundColor: colors.parchmentLight}} data={recipes}
+        return <ScrollableList style={{backgroundColor: colors.parchmentLight}} data={this.state.recipes}
                                renderRow={(data) => <RecipeListItem {...data} navigateTo={this._navigateToRecipe.bind(this)} />}/>
     }
 }

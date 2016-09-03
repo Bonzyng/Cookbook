@@ -16,6 +16,8 @@ import AddIngredient from './add-ingredient';
 import Button from './../Button/button';
 import {colors, dims} from '../../styles/global-styles';
 
+import {addRecipe} from '../../stores/recipe-data';
+
 // TODO Remove. Moved to ingredient-list-item
 const ingredientUnits = {
     kg: 'Kg',
@@ -61,7 +63,8 @@ class AddRecipeContainer extends Component {
     }
 
     _addRecipe() {
-        alert('Adding recipe!\nName: ' + this.state.name + '\nPrep time: ' + this.state.prepTime);
+        addRecipe(this.state);
+        this.props.navigator.pop();
     }
 
     _increase5() {
