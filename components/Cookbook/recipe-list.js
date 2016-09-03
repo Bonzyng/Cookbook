@@ -4,6 +4,7 @@ import ScrollableList from 'react-native-scrollable-list';
 import RecipeListItem from './recipe-list-item';
 import {colors} from '../../styles/global-styles';
 
+// TODO Remove when switching to remote data fetching
 const recipes = [
     {
         name: 'Lettuce Salad',

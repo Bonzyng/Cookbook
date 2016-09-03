@@ -3,12 +3,6 @@ import {Text, View, StyleSheet, TouchableHighlight, TextInput, Picker} from 'rea
 
 import {dims, colors} from '../../styles/global-styles';
 
-const ingredientUnits = {
-    kg: 'Kg',
-    gram: 'Grams',
-    unit: 'Units'
-}
-
 class IngredientListItem extends Component {
     constructor(props) {
         super(props);

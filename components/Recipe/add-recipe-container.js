@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Route from '../Navigation/route';
 import IngredientListItem from './ingredient-list-item';
 import AddIngredient from './add-ingredient';
+import Button from './../Button/button';
 import {colors, dims} from '../../styles/global-styles';
 
 // TODO Remove. Moved to ingredient-list-item
@@ -48,7 +49,8 @@ class AddRecipeContainer extends Component {
             servings: 0,
             tags: {},
             instructions: '',
-            ingredientsArray: fakeIngredients,
+            ingredientsArray: fakeIngredients, // TODO Change to remote data
+            instructionsTextHeight: 0,
         }
     }
 
@@ -111,7 +113,7 @@ class AddRecipeContainer extends Component {
     render() {
         let ingredients = this.state.ingredientsArray.map((data, i) => {
             return <View key={i}><IngredientListItem {...data} /></View>
-        })
+        });
 
         return (
             <ScrollView style={styles.body}>
@@ -199,6 +201,30 @@ class AddRecipeContainer extends Component {
                         </TouchableHighlight>
                         <Text>Add ingredient...</Text>
                     </View>
+                </View>
+
+                <View style={styles.column}>
+                    <Text style={styles.text}>Description:</Text>
+                    <TextInput
+                        style={[styles.textInput, {height: Math.max(dims.height * 0.075, this.state.instructionsTextHeight)}]}
+                        multiline={true}
+
+                        onChange={(event) => {
+                                    this.setState({
+                                        instructions: event.nativeEvent.text,
+                                        instructionsTextHeight: event.nativeEvent.contentSize.height,
+                                    });
+                               }}
+                        value={this.state.instructions}
+                    />
+                </View>
+
+                <View style={[styles.row, {flex: 1, justifyContent: 'center', padding: dims.height * 0.05}]}>
+                    <Button
+                        onPress={this._addRecipe.bind(this)}
+                    >
+                        Add Recipe
+                    </Button>
                 </View>
 
                 <View style={{height: dims.height * 0.1}}/>

@@ -41,14 +41,17 @@ class RecipeListItem extends Component {
         return (
             this.state.selected ?
                 <View style={styles.row}>
-                    <TouchableHighlight style={styles.button} onPress={this._decrease.bind(this)} underlayColor={colors.leatherLight}>
+                    <TouchableHighlight style={styles.button} onPress={this._decrease.bind(this)}
+                                        underlayColor={colors.leatherLight}>
                         <Text style={styles.buttonText}>-</Text>
                     </TouchableHighlight>
                     <Text style={styles.num}>{this.state.num}</Text>
-                    <TouchableHighlight style={styles.button} onPress={this._increase.bind(this)} underlayColor={colors.leatherLight}>
+                    <TouchableHighlight style={styles.button} onPress={this._increase.bind(this)}
+                                        underlayColor={colors.leatherLight}>
                         <Text style={styles.buttonText}>+</Text>
                     </TouchableHighlight>
-                    <TouchableHighlight onPress={() => this.props.navigateTo(this.props.name)} underlayColor={colors.leatherLight}>
+                    <TouchableHighlight onPress={() => this.props.navigateTo(this.props.name)}
+                                        underlayColor={colors.leatherLight}>
                         <View style={[styles.data, styles.row]}>
                             <Text style={styles.recipeName}>{this.props.name}</Text>
                         </View>
@@ -56,10 +59,12 @@ class RecipeListItem extends Component {
                 </View>
                 :
                 <View style={styles.row}>
-                    <TouchableHighlight style={styles.button} onPress={this._toggleSelect.bind(this)} underlayColor={colors.leatherLight}>
+                    <TouchableHighlight style={styles.button} onPress={this._toggleSelect.bind(this)}
+                                        underlayColor={colors.leatherLight}>
                         <Text style={styles.buttonText}>{this.props.name.charAt(0)}</Text>
                     </TouchableHighlight>
-                    <TouchableHighlight style={{flex: 1}} underlayColor={colors.leatherLight} onPress={() => this.props.navigateTo(this.props.name)}>
+                    <TouchableHighlight style={{flex: 1}} underlayColor={colors.leatherLight}
+                                        onPress={() => this.props.navigateTo(this.props.name)}>
                         <View style={[styles.row, {alignSelf: 'stretch'}]}>
                             <View style={styles.data}>
                                 <Text style={styles.recipeName}>{this.props.name}</Text>
