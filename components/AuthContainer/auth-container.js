@@ -4,6 +4,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 import SignInContainer from '../LoginContainer/sign-in-container';
 import NavigatorContainer from '../Navigation/NavigatorContainer/navigator-container';
+import RecipeContainer from '../Recipe/recipe-container';
 
 import auth from './../../stores/auth';
 import api from './../../stores/api';
@@ -20,6 +21,7 @@ class AuthContainer extends Component {
     componentWillMount() {
         api.auth.initFirebaseListener();
     }
+    //<NavigatorContainer user={this.state.user}/>
 
     render() {
         let spinner;
@@ -29,7 +31,7 @@ class AuthContainer extends Component {
         return (
             this.state.isAuth ?
                 // Authenticated
-                <NavigatorContainer user={this.state.user}/>
+                <RecipeContainer />
                 :
                 // Not authenticated
                 <View>

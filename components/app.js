@@ -2,14 +2,14 @@ import React, {Component} from 'react';
 import {StyleSheet} from 'react-native';
 import SplashScreen from './SplashScreen/splash-screen';
 import AuthContainer from './AuthContainer/auth-container';
-import AddRecipeContainer from './Recipe/add-recipe-container';
+import RecipeContainer from './Recipe/recipe-container';
 
 import {logo} from './../styles/global-styles'
 
 class App extends Component {
     render() {
         // return (
-        //     <AddRecipeContainer />
+        //     <RecipeContainer />
         // );
         // TODO Return this to normal
         return (

@@ -10,6 +10,8 @@ const config = {
 };
 const fb = firebase.initializeApp(config);
 
+const database = fb.database();
+
 // Keep only essential user data, so not to expose sensitive data to other components
 function sanitizeUserData(user) {
     let clearUser = {};
@@ -26,7 +28,7 @@ let auth = createStore(
     {
         api: api,
         name: 'auth',
-        actions: ['signUp', 'signIn', 'signOut', 'initFirebaseListener', 'stripErrors']
+        actions: ['signUp', 'signIn', 'signOut', 'initFirebaseListener', 'stripErrors', 'getUserUid']
     },
     // Store definition
     {
@@ -70,6 +72,7 @@ let auth = createStore(
             fb.auth().createUserWithEmailAndPassword(email, password)
                 .then((payload)=> {
                     this.updateUserInfo({displayName: displayName});
+                    this.addUserToDb(displayName, email);
                 }).catch((error) => {
                 // Handle Errors here.
                 var errorCode = error.code;
@@ -121,7 +124,17 @@ let auth = createStore(
             }, (err)=> {
                 console.log(err);
             });
+        },
+        addUserToDb(displayName, email) {
+            database.ref('users/' + fb.auth().currentUser.uid).set({
+                username: displayName,
+                email: email
+            })
+        },
+        getUserUid() {
+            return fb.auth().currentUser.uid;
         }
     });
 
+export {database};
 export default auth;
