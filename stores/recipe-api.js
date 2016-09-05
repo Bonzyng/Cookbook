@@ -42,25 +42,30 @@ class recipeApi {
             }));
     }
 
+    readAllRecipes() {
+        return database.ref('users/' + auth.getUserUid() + '/recipes/')
+            .once('value'.then(function (snapshot) {
+                return snapshot.val();
+            }));
+    }
+
     onChange(func) {
-        database.ref('users/' + auth.getUserUid() + '/recipes').on('child_changed', function(data) {
-           func(data);
+        database.ref('users/' + auth.getUserUid() + '/recipes').on('child_changed', function (data) {
+            func(data);
         });
     }
 
     onDelete(func) {
-        database.ref('users/' + auth.getUserUid() + '/recipes').on('child_removed', function(data) {
+        database.ref('users/' + auth.getUserUid() + '/recipes').on('child_removed', function (data) {
             func(data);
         });
     }
 
     onCreate(func) {
-        database.ref('users/' + auth.getUserUid() + '/recipes').on('child_added', function(data) {
+        database.ref('users/' + auth.getUserUid() + '/recipes').on('child_added', function (data) {
             func(data);
         });
     }
 }
-
-// TODO Listener for recipe-list to update when a recipe is added/removed
 
 export default recipeApi;
