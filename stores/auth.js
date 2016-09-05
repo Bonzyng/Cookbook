@@ -32,7 +32,7 @@ let auth = createStore(
     },
     // Store definition
     {
-        getInitialState(){ // Like React! <3
+        getInitialState(){
             return {
                 isAuth: false,
                 loading: true,

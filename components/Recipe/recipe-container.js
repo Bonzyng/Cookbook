@@ -12,7 +12,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import ControlPanel from '../Navigation/control-panel';
 import Route from '../Navigation/route';
 import {colors, dims} from '../../styles/global-styles';
-import {testDb} from '../../stores/recipe-data';
+import {testDb} from '../../stores/recipe-api';
 
 class RecipeContainer extends Component {
     constructor(props) {

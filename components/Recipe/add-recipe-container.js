@@ -16,7 +16,7 @@ import AddIngredient from './add-ingredient';
 import Button from './../Button/button';
 import {colors, dims} from '../../styles/global-styles';
 
-import {addRecipe} from '../../stores/recipe-data';
+import {createRecipe} from '../../stores/recipe-api';
 
 // TODO Remove. Moved to ingredient-list-item
 const ingredientUnits = {
@@ -63,7 +63,7 @@ class AddRecipeContainer extends Component {
     }
 
     _addRecipe() {
-        addRecipe(this.state);
+        createRecipe(this.state);
         this.props.navigator.pop();
     }
 
