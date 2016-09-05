@@ -2,10 +2,41 @@ import * as firebase from 'firebase';
 import {database} from './auth';
 import auth from './auth';
 
-// TODO Connect to server - CRUD methods for recipes
+// TODO Connect to server - CRUD methods for recipes (maybe skip the U for now)
 let addRecipe = function(recipe) {
-    alert('Adding recipe ' + recipe.name);
+    let name = recipe.name.replace(/ /g, '_');
+
+    database.ref('users/' + auth.getUserUid() + '/recipes/' + name).set(recipe)
+        .then(function() {
+            console.log('Added recipe ' + recipe.name);
+        })
+        .catch(function(error) {
+            console.log('Error adding recipe. ' + error);
+        });
 };
+
+let deleteRecipe = function(name) {
+    let formattedName = name.replace(/ /g, '_');
+
+    database.ref('users/' + auth.getUserUid() + '/recipes/' + formattedName).remove()
+        .then(function() {
+            console.log('Successfully removed recipe');
+        })
+        .catch(function(error) {
+            console.log('Failed to remove recipe. ' + error);
+        })
+};
+
+let readRecipe = function(name) {
+    let formattedName = name.replace(/ /g, '_');
+
+    return database.ref('users/' + auth.getUserUid() + '/recipes/' + formattedName)
+        .once('value'.then(function(snapshot) {
+            return snapshot.val();
+        }));
+};
+
+// TODO Listener for recipe-list to update when a recipe is added/removed
 
 let testDb = function() {
     database.ref('users/' + auth.getUserUid() + '/recipes/').on('value', function(snapshot){
