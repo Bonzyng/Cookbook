@@ -35,10 +35,29 @@ class recipeApi {
     readRecipe(name) {
         let formattedName = this._formatName(name);
 
+        // FIXME Possibly need to change to on()/off() instead of once(). Might cause issues with re-rendering after 'child_X' events
         return database.ref('users/' + auth.getUserUid() + '/recipes/' + formattedName)
             .once('value'.then(function (snapshot) {
                 return snapshot.val();
             }));
+    }
+
+    onChange(func) {
+        database.ref('users/' + auth.getUserUid() + '/recipes').on('child_changed', function(data) {
+           func(data);
+        });
+    }
+
+    onDelete(func) {
+        database.ref('users/' + auth.getUserUid() + '/recipes').on('child_removed', function(data) {
+            func(data);
+        });
+    }
+
+    onCreate(func) {
+        database.ref('users/' + auth.getUserUid() + '/recipes').on('child_added', function(data) {
+            func(data);
+        });
     }
 }
 
