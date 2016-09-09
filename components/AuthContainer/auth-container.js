@@ -31,7 +31,7 @@ class AuthContainer extends Component {
         return (
             this.state.isAuth ?
                 // Authenticated
-                <RecipeContainer />
+                <NavigatorContainer user={this.state.user}/>
                 :
                 // Not authenticated
                 <View>

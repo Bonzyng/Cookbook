@@ -16,7 +16,7 @@ import AddIngredient from './add-ingredient';
 import Button from './../Button/button';
 import {colors, dims} from '../../styles/global-styles';
 
-import {createRecipe} from '../../stores/recipe-api';
+import recipeApi from '../../stores/recipe-api';
 
 // TODO Remove. Moved to ingredient-list-item
 const ingredientUnits = {
@@ -46,6 +46,7 @@ class AddRecipeContainer extends Component {
 
         this.state = {
             name: '',
+            category: '',
             prepTime: 0,
             difficulty: difficulties.medium,
             servings: 0,
@@ -63,7 +64,7 @@ class AddRecipeContainer extends Component {
     }
 
     _addRecipe() {
-        createRecipe(this.state);
+        recipeApi.createRecipe(this.state);
         this.props.navigator.pop();
     }
 
@@ -128,6 +129,13 @@ class AddRecipeContainer extends Component {
                     <TextInput style={styles.textInput}
                                onChangeText={(name) => this.setState({name})}
                                value={this.state.name}/>
+                </View>
+
+                <View style={styles.row}>
+                    <Text style={styles.text}>Category: </Text>
+                    <TextInput style={styles.textInput}
+                               onChangeText={(category) => this.setState({category})}
+                               value={this.state.category}/>
                 </View>
 
                 <View style={{marginTop: dims.height * -0.01}}/>
