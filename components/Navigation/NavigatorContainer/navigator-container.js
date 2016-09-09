@@ -26,7 +26,7 @@ class NavigatorContainer extends Component {
         super(props)
     }
 
-    _sceneLogic(route, navigator) {
+    _renderScene(route, navigator) {
         _navigator = navigator;
         // return route.component
         let newUser = React.cloneElement(route.component, {user: this.props.user, navigator: navigator});
@@ -67,7 +67,7 @@ class NavigatorContainer extends Component {
             <Navigator
                 initialRoute={ComponentsConfig.getInitialComponent}
                 initialRouteStack={ComponentsConfig.getComponents}
-                renderScene={this._sceneLogic.bind(this)}
+                renderScene={this._renderScene.bind(this)}
                 navigationBar={this._navigationBar}
                 configureScene={() => ({ ...Navigator.SceneConfigs.FloatFromBottom, gestures: {}})}
                 style={{backgroundColor: colors.parchmentLight}}

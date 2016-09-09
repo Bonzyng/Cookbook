@@ -4,6 +4,7 @@ import ScrollableList from 'react-native-scrollable-list';
 import RecipeListItem from './recipe-list-item';
 import {colors} from '../../styles/global-styles';
 import {database} from '../../stores/auth';
+import {recipeRouteMaker} from '../Recipe/recipe-container';
 
 // TODO Remove when switching to remote data fetching
 const recipes = [
@@ -12,6 +13,20 @@ const recipes = [
         category: 'Salad',
         servings: 4,
         time: 15,
+        difficulty: 'Medium',
+        ingredientsArray: [
+            {
+                unit: 'Kg',
+                amount: '1',
+                name: 'Lettuce'
+            },
+            {
+                unit: 'Gram',
+                amount: '20',
+                name: 'Salt'
+            }
+        ],
+        instructions: 'cut lettuce\nput in bowl\nadd salt\neat!',
         id: 1,
     },
     {
@@ -19,6 +34,7 @@ const recipes = [
         category: 'Meat',
         servings: 2,
         time: 30,
+        difficulty: 'Medium',
         id: 2,
     },
     {
@@ -26,6 +42,7 @@ const recipes = [
         category: 'Dessert',
         servings: 3,
         time: 5,
+        difficulty: 'Medium',
         id: 3,
     },
 ];
@@ -35,7 +52,7 @@ class RecipeList extends Component {
         super(props);
 
         this.state = {
-            recipes: []
+            recipes: recipes
         };
     }
 
@@ -44,8 +61,10 @@ class RecipeList extends Component {
     }
 
 
-    _navigateToRecipe(name) {
-        alert(name);
+    _navigateToRecipe(recipe) {
+        this.props.navigator.push(
+            recipeRouteMaker(recipe)
+        )
     }
 
     _listenForRecipes() {
@@ -74,7 +93,7 @@ class RecipeList extends Component {
     // TODO use renderSeparator and height: StyleSheet.hairlineWidth. See https://medium.com/@spencer_carli/react-native-basics-how-to-use-the-listview-component-a0ec44cf1fe8#.8qrpnww2h
     render() {
         return <ScrollableList style={{backgroundColor: colors.parchmentLight}} data={this.state.recipes}
-                               renderRow={(data) => <RecipeListItem {...data} navigateTo={this._navigateToRecipe.bind(this)} />}/>
+                               renderRow={(data) => <RecipeListItem recipe={data} navigateTo={this._navigateToRecipe.bind(this)} />}/>
     }
 }
 

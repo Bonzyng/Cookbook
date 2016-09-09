@@ -45,7 +45,7 @@ class CookbookContainer extends Component {
                 ref={'DRAWER_REF'}
                 drawerWidth={300}
                 drawerPosition={DrawerLayoutAndroid.positions.Left}
-                renderNavigationView={() => <ControlPanel user={this.props.user} />}>
+                renderNavigationView={() => <ControlPanel user={this.props.user} navigator={this.props.navigator} />}>
                 <View style={{marginTop: dims.height * 0.1}}/>
                 <RecipeList navigator={this.props.navigator}/>
                 <ActionButton

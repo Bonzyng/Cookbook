@@ -50,10 +50,10 @@ class RecipeListItem extends Component {
                                         underlayColor={colors.leatherLight}>
                         <Text style={styles.buttonText}>+</Text>
                     </TouchableHighlight>
-                    <TouchableHighlight onPress={() => this.props.navigateTo(this.props.name)}
+                    <TouchableHighlight onPress={() => this.props.navigateTo(this.props.recipe)}
                                         underlayColor={colors.leatherLight}>
                         <View style={[styles.data, styles.row]}>
-                            <Text style={styles.recipeName}>{this.props.name}</Text>
+                            <Text style={styles.recipeName}>{this.props.recipe.name}</Text>
                         </View>
                     </TouchableHighlight>
                 </View>
@@ -61,24 +61,24 @@ class RecipeListItem extends Component {
                 <View style={styles.row}>
                     <TouchableHighlight style={styles.button} onPress={this._toggleSelect.bind(this)}
                                         underlayColor={colors.leatherLight}>
-                        <Text style={styles.buttonText}>{this.props.name.charAt(0)}</Text>
+                        <Text style={styles.buttonText}>{this.props.recipe.name.charAt(0)}</Text>
                     </TouchableHighlight>
                     <TouchableHighlight style={{flex: 1}} underlayColor={colors.leatherLight}
-                                        onPress={() => this.props.navigateTo(this.props.name)}>
+                                        onPress={() => this.props.navigateTo(this.props.recipe)}>
                         <View style={[styles.row, {alignSelf: 'stretch'}]}>
                             <View style={styles.data}>
-                                <Text style={styles.recipeName}>{this.props.name}</Text>
+                                <Text style={styles.recipeName}>{this.props.recipe.name}</Text>
                                 <View style={{flexDirection: 'row'}}>
                                     <View style={{flex: 1, alignItems: 'flex-start'}}>
-                                        <Text>Category: {this.props.category}</Text>
+                                        <Text>Category: {this.props.recipe.category}</Text>
                                     </View>
                                     <View style={{flex: 1, alignItems: 'flex-end'}}>
-                                        <Text>Servings: {this.props.servings}</Text>
+                                        <Text>Servings: {this.props.recipe.servings}</Text>
                                     </View>
                                 </View>
                             </View>
                             <View style={styles.timeArea}>
-                                <Text style={styles.time}>{this.props.time}</Text>
+                                <Text style={styles.time}>{this.props.recipe.time}</Text>
                                 <View style={{flexDirection: 'column', justifyContent: 'flex-end'}}>
                                     <Text style={styles.minutes}>min.</Text>
                                 </View>

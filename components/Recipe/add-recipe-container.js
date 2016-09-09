@@ -16,13 +16,13 @@ import AddIngredient from './add-ingredient';
 import Button from './../Button/button';
 import {colors, dims} from '../../styles/global-styles';
 
-import recipeApi from '../../stores/recipe-api';
-
 const difficulties = {
     hard: 'Hard',
     medium: 'Medium',
     easy: 'Easy'
 };
+
+let addRecipePtr, addRecipeContext;
 
 class AddRecipeContainer extends Component {
     constructor(props) {
@@ -31,14 +31,17 @@ class AddRecipeContainer extends Component {
         this.state = {
             name: '',
             category: '',
-            prepTime: 0,
+            time: 0,
             difficulty: difficulties.medium,
             servings: 0,
             tags: {},
             instructions: '',
             ingredientsArray: [],
             instructionsTextHeight: 0,
-        }
+        };
+
+        addRecipePtr = this._addRecipe;
+        addRecipeContext = this;
     }
 
     _addIngredient(ingredient) {
@@ -55,32 +58,32 @@ class AddRecipeContainer extends Component {
 
     _increase5() {
         this.setState({
-            prepTime: this.state.prepTime + 5
+            time: this.state.time + 5
         })
     }
 
     _increase30() {
         this.setState({
-            prepTime: this.state.prepTime + 30
+            time: this.state.time + 30
         })
     }
 
     _decrease5() {
-        if (this.state.prepTime - 5 < 0) {
+        if (this.state.time - 5 < 0) {
             this.setState({
-                prepTime: 0
+                time: 0
             })
         } else {
             this.setState({
-                prepTime: this.state.prepTime - 5
+                time: this.state.time - 5
             })
         }
     }
 
     _decrease30() {
-        if (this.state.prepTime - 30 >= 0) {
+        if (this.state.time - 30 >= 0) {
             this.setState({
-                prepTime: this.state.prepTime - 30
+                time: this.state.time - 30
             })
         }
     }
@@ -153,7 +156,7 @@ class AddRecipeContainer extends Component {
                         </TouchableHighlight>
                         <Text
                             style={[styles.text, {minWidth: dims.width * 0.12, textAlign: 'center'}]}>
-                            {this.state.prepTime}
+                            {this.state.time}
                         </Text>
                         <TouchableHighlight style={styles.button} onPress={this._increase5.bind(this)}
                                             underlayColor={colors.leatherLight}>
@@ -241,7 +244,7 @@ function leftButtonFunc(route, navigator, index, navState) {
 function rightButtonFunc(route, navigator, index, navState) {
     return <TouchableHighlight
         underlayColor='transparent'
-        onPress={() => {this._addRecipe.bind(this)}}
+        onPress={addRecipePtr.bind(addRecipeContext)}
         style={styles.navBarButton}>
         <Icon name='check' size={30} color={colors.parchmentLight}/>
     </TouchableHighlight>;
