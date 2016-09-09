@@ -8,10 +8,6 @@ import {logo} from './../styles/global-styles'
 
 class App extends Component {
     render() {
-        // return (
-        //     <RecipeContainer />
-        // );
-        // TODO Return this to normal
         return (
             <SplashScreen logo={logo} duration={0}>
                 <AuthContainer />

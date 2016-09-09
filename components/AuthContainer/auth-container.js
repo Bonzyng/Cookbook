@@ -21,7 +21,6 @@ class AuthContainer extends Component {
     componentWillMount() {
         api.auth.initFirebaseListener();
     }
-    //<NavigatorContainer user={this.state.user}/>
 
     render() {
         let spinner;

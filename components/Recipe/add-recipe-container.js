@@ -18,22 +18,6 @@ import {colors, dims} from '../../styles/global-styles';
 
 import recipeApi from '../../stores/recipe-api';
 
-// TODO Remove. Moved to ingredient-list-item
-const ingredientUnits = {
-    kg: 'Kg',
-    gram: 'Grams',
-    unit: 'Units'
-}
-
-// TODO Remove
-const fakeIngredients = [
-    {name: 'Tomato', amount: 1, unit: ingredientUnits.kg},
-    {name: 'Pasta', amount: 500, unit: ingredientUnits.gram},
-    {name: 'Salt', amount: 10, unit: ingredientUnits.gram},
-    {name: 'Salt', amount: 10, unit: ingredientUnits.gram},
-    {name: 'Egg', amount: 2, unit: ingredientUnits.unit}
-];
-
 const difficulties = {
     hard: 'Hard',
     medium: 'Medium',
@@ -52,7 +36,7 @@ class AddRecipeContainer extends Component {
             servings: 0,
             tags: {},
             instructions: '',
-            ingredientsArray: fakeIngredients, // TODO Change to remote data
+            ingredientsArray: [],
             instructionsTextHeight: 0,
         }
     }
@@ -64,7 +48,8 @@ class AddRecipeContainer extends Component {
     }
 
     _addRecipe() {
-        recipeApi.createRecipe(this.state);
+        // recipeApi.createRecipe(this.state);
+        alert('This is where I would add the recipe, if the database worked!');
         this.props.navigator.pop();
     }
 
@@ -314,5 +299,3 @@ const styles = StyleSheet.create({
 
 let AddRecipeRoute = new Route(1, 'Add Recipe', 'add-recipe', <AddRecipeContainer />, leftButtonFunc, rightButtonFunc);
 export {AddRecipeRoute};
-
-export default AddRecipeContainer;

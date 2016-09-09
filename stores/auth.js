@@ -103,10 +103,11 @@ let auth = createStore(
             });
         },
         signIn(email, password){
-            console.log('sign in', email, password);
+            console.log('signing in', email, password);
             this.setState({loading: true});
             fb.auth().signInWithEmailAndPassword(email, password).then((payload)=> {
                 // Observer (Firebase listener) should notify about login so basically nothing...
+                console.log('signed in', email, password);
             }).catch((error)=> {
                 // Handle Errors here.
                 var errorCode = error.code;

@@ -3,8 +3,7 @@ import ScrollableList from 'react-native-scrollable-list';
 
 import RecipeListItem from './recipe-list-item';
 import {colors} from '../../styles/global-styles';
-
-import recipeApi from '../../stores/recipe-api';
+import {database} from '../../stores/auth';
 
 // TODO Remove when switching to remote data fetching
 const recipes = [
@@ -38,28 +37,38 @@ class RecipeList extends Component {
         this.state = {
             recipes: []
         };
-
-
-        this._getRecipes();
     }
-    
+
+    componentDidMount() {
+        this._listenForRecipes();
+    }
+
+
     _navigateToRecipe(name) {
         alert(name);
     }
 
-    _getRecipes() {
-        let data = recipeApi.readAllRecipes();
-        let arr = [];
-
-        for(var k in data) {
-            if (data.hasOwnProperty(k)) {
-                arr.push(data[k]);
-            }
-        }
-
-        this.setState({
-            recipes: arr
-        });
+    _listenForRecipes() {
+        // alert('Getting recipes!');
+        //
+        // database.ref('users/' + auth.getUserUid() + '/recipes')
+        //     .once('value', (snapshot) => {
+        //         let data = snapshot.val();
+        //         let arr = [];
+        //
+        //         // for(var k in data) {
+        //         //     if (data.hasOwnProperty(k)) {
+        //         //         arr.push(data[k]);
+        //         //     }
+        //         // }
+        //         snapshot.forEach((child) => {
+        //             arr.push(child.val());
+        //         });
+        //
+        //         this.setState({
+        //             recipes: this.state.recipes.cloneWithRows(arr)
+        //         });
+        //     })
     }
 
     // TODO use renderSeparator and height: StyleSheet.hairlineWidth. See https://medium.com/@spencer_carli/react-native-basics-how-to-use-the-listview-component-a0ec44cf1fe8#.8qrpnww2h

@@ -43,6 +43,7 @@ class recipeApi {
     }
 
     readAllRecipes() {
+        alert('Reading all recipes');
         return database.ref('users/' + auth.getUserUid() + '/recipes/')
             .once('value'.then(function (snapshot) {
                 return snapshot.val();
