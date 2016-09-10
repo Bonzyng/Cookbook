@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
+import {AsyncStorage} from 'react-native';
 import ScrollableList from 'react-native-scrollable-list';
 
 import RecipeListItem from './recipe-list-item';
+import auth from '../../stores/auth';
 import {colors} from '../../styles/global-styles';
-import {database} from '../../stores/auth';
 import {recipeRouteMaker} from '../Recipe/recipe-container';
 
 // TODO Remove when switching to remote data fetching
@@ -52,12 +53,12 @@ class RecipeList extends Component {
         super(props);
 
         this.state = {
-            recipes: recipes
+            recipes: []
         };
     }
 
     componentDidMount() {
-        this._listenForRecipes();
+        this._getRecipes();
     }
 
 
@@ -67,33 +68,25 @@ class RecipeList extends Component {
         )
     }
 
-    _listenForRecipes() {
-        // alert('Getting recipes!');
-        //
-        // database.ref('users/' + auth.getUserUid() + '/recipes')
-        //     .once('value', (snapshot) => {
-        //         let data = snapshot.val();
-        //         let arr = [];
-        //
-        //         // for(var k in data) {
-        //         //     if (data.hasOwnProperty(k)) {
-        //         //         arr.push(data[k]);
-        //         //     }
-        //         // }
-        //         snapshot.forEach((child) => {
-        //             arr.push(child.val());
-        //         });
-        //
-        //         this.setState({
-        //             recipes: this.state.recipes.cloneWithRows(arr)
-        //         });
-        //     })
+    _getRecipes() {
+        AsyncStorage.getItem(auth.getUserUid() + '/recipes')
+            .then((value) => {
+                this.setState({
+                    recipes: JSON.parse(value)
+                });
+            })
+            .catch(() => {
+                this.setState({
+                    recipes: []
+                });
+            }).done();
     }
 
     // TODO use renderSeparator and height: StyleSheet.hairlineWidth. See https://medium.com/@spencer_carli/react-native-basics-how-to-use-the-listview-component-a0ec44cf1fe8#.8qrpnww2h
     render() {
         return <ScrollableList style={{backgroundColor: colors.parchmentLight}} data={this.state.recipes}
-                               renderRow={(data) => <RecipeListItem recipe={data} navigateTo={this._navigateToRecipe.bind(this)} />}/>
+                               renderRow={(data) => <RecipeListItem recipe={data}
+                                                                    navigateTo={this._navigateToRecipe.bind(this)}/>}/>
     }
 }
 

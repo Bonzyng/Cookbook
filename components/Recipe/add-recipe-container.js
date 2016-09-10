@@ -7,6 +7,7 @@ import {
     TouchableHighlight,
     TextInput,
     Picker,
+    AsyncStorage,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -14,6 +15,7 @@ import Route from '../Navigation/route';
 import IngredientListItem from './ingredient-list-item';
 import AddIngredient from './add-ingredient';
 import Button from './../Button/button';
+import auth from '../../stores/auth';
 import {colors, dims} from '../../styles/global-styles';
 
 const difficulties = {
@@ -40,8 +42,8 @@ class AddRecipeContainer extends Component {
             instructionsTextHeight: 0,
         };
 
-        addRecipePtr = this._addRecipe;
         addRecipeContext = this;
+        addRecipePtr = this._addRecipe;
     }
 
     _addIngredient(ingredient) {
@@ -51,9 +53,30 @@ class AddRecipeContainer extends Component {
     }
 
     _addRecipe() {
-        // recipeApi.createRecipe(this.state);
-        alert('This is where I would add the recipe, if the database worked!');
-        this.props.navigator.pop();
+        if (this._valuesAreLegal()) {
+            AsyncStorage.getItem(auth.getUserUid() + '/recipes')
+                .then((value) => {
+                    let arr = JSON.parse(value);
+                    arr.push(this.state);
+                    AsyncStorage.setItem(auth.getUserUid() + '/recipes', JSON.stringify(arr));
+                })
+                .catch((error) => {
+                    alert(error);
+                    AsyncStorage.setItem(auth.getUserUid() + '/recipes', JSON.stringify([this.state]));
+                }).done();
+
+            this.props.navigator.pop();
+        } else {
+            alert('You are missing some mandatory fields. Can\'t add recipe!');
+        }
+    }
+
+    _valuesAreLegal() {
+        return this.state.name &&
+            this.state.time > 0 &&
+            this.state.servings > 0 &&
+            this.state.instructions &&
+            this.state.ingredientsArray.length > 0;
     }
 
     _increase5() {
@@ -209,11 +232,11 @@ class AddRecipeContainer extends Component {
                         multiline={true}
 
                         onChange={(event) => {
-                                    this.setState({
-                                        instructions: event.nativeEvent.text,
-                                        instructionsTextHeight: event.nativeEvent.contentSize.height,
-                                    });
-                               }}
+                            this.setState({
+                                instructions: event.nativeEvent.text,
+                                instructionsTextHeight: event.nativeEvent.contentSize.height,
+                            });
+                        }}
                         value={this.state.instructions}
                     />
                 </View>
