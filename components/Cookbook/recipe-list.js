@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {AsyncStorage} from 'react-native';
 import ScrollableList from 'react-native-scrollable-list';
+import Events from 'react-native-simple-events';
 
 import RecipeListItem from './recipe-list-item';
 import auth from '../../stores/auth';
@@ -48,6 +49,8 @@ const recipes = [
     },
 ];
 
+const listenerId = 'RecipeListListener';
+
 class RecipeList extends Component {
     constructor(props) {
         super(props);
@@ -59,8 +62,13 @@ class RecipeList extends Component {
 
     componentDidMount() {
         this._getRecipes();
+
+        Events.on('ADD_RECIPE', listenerId, this._getRecipes());
     }
 
+    componentWillUnmount() {
+        Events.rm('ADD_RECIPE', listenerId);
+    }
 
     _navigateToRecipe(recipe) {
         this.props.navigator.push(

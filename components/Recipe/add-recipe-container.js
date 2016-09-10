@@ -9,6 +9,7 @@ import {
     Picker,
     AsyncStorage,
 } from 'react-native';
+import Events from 'react-native-simple-events';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Route from '../Navigation/route';
@@ -65,6 +66,7 @@ class AddRecipeContainer extends Component {
                     AsyncStorage.setItem(auth.getUserUid() + '/recipes', JSON.stringify([this.state]));
                 }).done();
 
+            Events.trigger('ADD_RECIPE');
             this.props.navigator.pop();
         } else {
             alert('You are missing some mandatory fields. Can\'t add recipe!');
