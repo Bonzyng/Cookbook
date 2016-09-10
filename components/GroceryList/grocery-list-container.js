@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import {Text, View, StyleSheet, TouchableHighlight, DrawerLayoutAndroid} from 'react-native';
+import {Text, View, StyleSheet, TouchableHighlight, DrawerLayoutAndroid, AsyncStorage} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ScrollableList from 'react-native-scrollable-list';
 
 import Route from '../Navigation/route';
 import ControlPanel from '../Navigation/control-panel';
 import GroceryListRecipeItem from './grocery-list-item-recipe';
+import {recipeRouteMaker} from '../Recipe/recipe-container';
 
 import {colors, dims} from '../../styles/global-styles';
 
@@ -53,7 +54,7 @@ const recipes = [
     },
 ];
 
-let groceryListContext, toggleViewPtr;
+let groceryListContext, drawerHandlerPtr, toggleViewPtr;
 
 class GroceryListContainer extends Component {
     constructor(props) {
@@ -61,12 +62,23 @@ class GroceryListContainer extends Component {
 
         groceryListContext = this;
         toggleViewPtr = this._toggleView;
+        drawerHandlerPtr = this._handleDrawer;
 
         this.state = {
             view: 'recipe',
             recipes: recipes,
         };
         // TODO Set state from localStorage + props?
+    }
+
+    _handleDrawer() {
+        if (this.state.drawerOpen) {
+            this.setState({drawerOpen: false});
+            this.refs['DRAWER_REF'].openDrawer();
+        } else {
+            this.setState({drawerOpen: true});
+            this.refs['DRAWER_REF'].closeDrawer();
+        }
     }
 
     _toggleView() {
@@ -77,6 +89,17 @@ class GroceryListContainer extends Component {
 
     _makeGroceryList(items) {
 
+    }
+
+    _setInitialValues() {
+        let currentList = {};
+
+        AsyncStorage.getItem('groceryList')
+            .then((value) => {
+                currentList = value;
+            }).done();
+
+        AsyncStorage.setItem()
     }
 
     _navigateToRecipe(recipe) {
@@ -97,28 +120,33 @@ class GroceryListContainer extends Component {
         });
     }
 
-    _decrease(recipe) {
+    _decrease(recipe, callerUpdate) {
         let updatedRecipes = this.state.recipes.slice();
         let index = this._findElement(updatedRecipes, 'name', recipe.name);
+
         if (index > -1) {
             if (updatedRecipes[index].num == 1) {
                 this._removeRecipe(recipe);
             } else {
-                updatedRecipes[index].num = updatedRecipes[i].num - 1;
+                updatedRecipes[index].num = updatedRecipes[index].num - 1;
+
+                callerUpdate(updatedRecipes[index].num);
+
+                this.setState({
+                    recipes: updatedRecipes
+                });
             }
         }
-
-        this.setState({
-            recipes: updatedRecipes
-        });
     }
 
-    _increase(recipe) {
+    _increase(recipe, callerUpdate) {
         let updatedRecipes = this.state.recipes.slice();
         let index = this._findElement(updatedRecipes, 'name', recipe.name);
         if (index > -1) {
-            updatedRecipes[index].num = updatedRecipes[i].num + 1;
+            updatedRecipes[index].num = updatedRecipes[index].num + 1;
         }
+
+        callerUpdate(updatedRecipes[index].num);
 
         this.setState({
             recipes: updatedRecipes
@@ -126,13 +154,14 @@ class GroceryListContainer extends Component {
     }
 
     _findElement(arr, propName, propValue) {
+        let val = -1;
         arr.forEach((v, i) => {
             if (v[propName] === propValue) {
-                return i;
+                val = i;
             }
         });
 
-        return -1;
+        return val;
     }
 
     render() {
@@ -167,7 +196,7 @@ class GroceryListContainer extends Component {
                                                               navigator={this.props.navigator}/>}>
                     <View style={{marginTop: dims.height * 0.1}}/>
                     <View style={styles.body}>
-                        <Text>Ingredients</Text>
+                        <Text style={styles.headline}>Ingredients</Text>
                     </View>
                 </DrawerLayoutAndroid>
         )
@@ -179,7 +208,7 @@ function leftButtonFunc(route, navigator, index, navState) {
         <TouchableHighlight
             underlayColor='transparent'
             style={styles.button}
-            onPress={() => alert('I do nothing')}>
+            onPress={drawerHandlerPtr.bind(groceryListContext)}>
             <Icon name='bars' size={30} color={colors.parchmentLight} style={{margin: 0, padding: 0}}/>
         </TouchableHighlight>
     )

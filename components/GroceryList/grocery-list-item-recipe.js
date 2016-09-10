@@ -4,17 +4,30 @@ import {StyleSheet, View, Text, Button, TouchableHighlight} from 'react-native';
 import {dims, colors} from '../../styles/global-styles';
 
 class GroceryListRecipeItem extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            num: this.props.num
+        };
+    }
+
+    updateNum(num) {
+        this.setState({
+            num
+        });
+    }
 
     // TODO Limit text lengths so we don't wrap and exist the item area
     render() {
         return (
             <View style={styles.row}>
-                <TouchableHighlight style={styles.button} onPress={() => this.props.decrease(this.props.recipe)}
+                <TouchableHighlight style={styles.button} onPress={() => this.props.decrease(this.props.recipe, this.updateNum.bind(this))}
                                     underlayColor={colors.leatherLight}>
                     <Text style={styles.buttonText}>-</Text>
                 </TouchableHighlight>
-                <Text style={styles.num}>{this.props.num}</Text>
-                <TouchableHighlight style={styles.button} onPress={() => this.props.increase(this.props.recipe)}
+                <Text style={styles.num}>{this.state.num}</Text>
+                <TouchableHighlight style={styles.button} onPress={() => this.props.increase(this.props.recipe, this.updateNum.bind(this))}
                                     underlayColor={colors.leatherLight}>
                     <Text style={styles.buttonText}>+</Text>
                 </TouchableHighlight>
