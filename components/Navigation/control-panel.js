@@ -13,18 +13,17 @@ class ControlPanel extends Component {
     }
 
     _navToCookbook() {
-        // alert(JSON.stringify(this.props.navigator.getCurrentRoutes(), null, 4));
         this.props.navigator.popToRoute(CookbookRoute)
     }
 
     _navToGroceryList() {
         let routes = this.props.navigator.getCurrentRoutes();
-        routes.some(this._checkHasGroceryListRouteId) ?
-            this.props.navigator.jumpTo(createGroceryListRoute()) :
+        if (!routes.some(ControlPanel._checkHasGroceryListRouteId)) {
             this.props.navigator.push(createGroceryListRoute());
+        }
     }
 
-    _checkHasGroceryListRouteId(route) {
+    static _checkHasGroceryListRouteId(route) {
         return route['_index'] === 4;
     }
 
@@ -71,7 +70,6 @@ const styles = StyleSheet.create({
         marginTop: 60,
         width: 300,
         flex: 1,
-        // justifyContent:'flex-end',
         backgroundColor: colors.parchmentLight
     },
     row: {
