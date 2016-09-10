@@ -59,14 +59,18 @@ class AddRecipeContainer extends Component {
                 .then((value) => {
                     let arr = JSON.parse(value);
                     arr.push(this.state);
-                    AsyncStorage.setItem(auth.getUserUid() + '/recipes', JSON.stringify(arr));
+                    AsyncStorage.setItem(auth.getUserUid() + '/recipes', JSON.stringify(arr))
+                        .then(Events.trigger('ADD_RECIPE'))
+                        .done();
                 })
                 .catch((error) => {
                     alert(error);
-                    AsyncStorage.setItem(auth.getUserUid() + '/recipes', JSON.stringify([this.state]));
+                    AsyncStorage.setItem(auth.getUserUid() + '/recipes', JSON.stringify([this.state]))
+                        .then(Events.trigger('ADD_RECIPE'))
+                        .done();
                 }).done();
 
-            Events.trigger('ADD_RECIPE');
+
             this.props.navigator.pop();
         } else {
             alert('You are missing some mandatory fields. Can\'t add recipe!');

@@ -51,6 +51,8 @@ const recipes = [
 
 const listenerId = 'RecipeListListener';
 
+let context;
+
 class RecipeList extends Component {
     constructor(props) {
         super(props);
@@ -58,12 +60,14 @@ class RecipeList extends Component {
         this.state = {
             recipes: []
         };
+
+        this._getRecipes = this._getRecipes.bind(this);
     }
 
     componentDidMount() {
         this._getRecipes();
 
-        Events.on('ADD_RECIPE', listenerId, this._getRecipes());
+        Events.on('ADD_RECIPE', listenerId, this._getRecipes);
     }
 
     componentWillUnmount() {
@@ -83,7 +87,7 @@ class RecipeList extends Component {
                     recipes: JSON.parse(value)
                 });
             })
-            .catch(() => {
+            .catch((error) => {
                 this.setState({
                     recipes: []
                 });
