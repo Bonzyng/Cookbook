@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import api from '../../stores/api';
 import {colors} from '../../styles/global-styles';
 import {CookbookRoute} from '../Cookbook/cookbook-container';
-import {GroceryListRoute} from '../GroceryList/grocery-list-container';
+import {createGroceryListRoute} from '../GroceryList/grocery-list-container';
 
 class ControlPanel extends Component {
     constructor(props) {
@@ -20,8 +20,8 @@ class ControlPanel extends Component {
     _navToGroceryList() {
         let routes = this.props.navigator.getCurrentRoutes();
         routes.some(this._checkHasGroceryListRouteId) ?
-            this.props.navigator.jumpTo(GroceryListRoute) :
-            this.props.navigator.push(GroceryListRoute);
+            this.props.navigator.jumpTo(createGroceryListRoute()) :
+            this.props.navigator.push(createGroceryListRoute());
     }
 
     _checkHasGroceryListRouteId(route) {
@@ -31,19 +31,31 @@ class ControlPanel extends Component {
     render() {
         return (
             <ScrollView style={styles.controlPanel}>
-                <TouchableHighlight underlayColor='transparent' onPress={()=>{this._navToCookbook()}}>
+                <TouchableHighlight
+                    underlayColor='transparent'
+                    onPress={()=> {
+                        this._navToCookbook()
+                    }}>
                     <View style={styles.row}>
                         <Icon style={styles.controlPanelIcon} name="book" size={30} color="black"/>
                         <Text style={styles.controlPanelText}>Cookbook</Text>
                     </View>
                 </TouchableHighlight>
-                <TouchableHighlight underlayColor='transparent' onPress={()=>{this._navToGroceryList()}}>
+                <TouchableHighlight
+                    underlayColor='transparent'
+                    onPress={()=> {
+                        this._navToGroceryList()
+                    }}>
                     <View style={styles.row}>
                         <Icon style={styles.controlPanelIcon} name="check-square-o" size={30} color="black"/>
                         <Text style={styles.controlPanelText}>Grocery List</Text>
                     </View>
                 </TouchableHighlight>
-                <TouchableHighlight underlayColor='transparent' onPress={()=>{api.auth.signOut()}}>
+                <TouchableHighlight
+                    underlayColor='transparent'
+                    onPress={()=> {
+                        api.auth.signOut()
+                    }}>
                     <View style={styles.row}>
                         <Icon style={styles.controlPanelIcon} name="sign-out" size={30} color="black"/>
                         <Text style={styles.controlPanelText}>Sign Out</Text>
