@@ -8,50 +8,7 @@ import auth from '../../stores/auth';
 import {colors} from '../../styles/global-styles';
 import {recipeRouteMaker} from '../Recipe/recipe-container';
 
-// TODO Remove when switching to remote data fetching
-const recipes = [
-    {
-        name: 'Lettuce Salad',
-        category: 'Salad',
-        servings: 4,
-        time: 15,
-        difficulty: 'Medium',
-        ingredientsArray: [
-            {
-                unit: 'Kg',
-                amount: '1',
-                name: 'Lettuce'
-            },
-            {
-                unit: 'Gram',
-                amount: '20',
-                name: 'Salt'
-            }
-        ],
-        instructions: 'cut lettuce\nput in bowl\nadd salt\neat!',
-        id: 1,
-    },
-    {
-        name: 'Steak',
-        category: 'Meat',
-        servings: 2,
-        time: 30,
-        difficulty: 'Medium',
-        id: 2,
-    },
-    {
-        name: 'Ice Cream',
-        category: 'Dessert',
-        servings: 3,
-        time: 5,
-        difficulty: 'Medium',
-        id: 3,
-    },
-];
-
 const listenerId = 'RecipeListListener';
-
-let context;
 
 class RecipeList extends Component {
     constructor(props) {
@@ -87,7 +44,7 @@ class RecipeList extends Component {
                     recipes: JSON.parse(value)
                 });
             })
-            .catch((error) => {
+            .catch(() => {
                 this.setState({
                     recipes: []
                 });
