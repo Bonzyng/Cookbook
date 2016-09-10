@@ -5,22 +5,89 @@ import {
     View,
     StyleSheet,
     TouchableHighlight,
-    DrawerLayoutAndroid
+    DrawerLayoutAndroid,
+    AsyncStorage,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import DialogBox from 'react-native-dialogbox';
+import Events from 'react-native-simple-events';
 
 import ControlPanel from '../Navigation/control-panel';
 import Route from '../Navigation/route';
 import IngredientListItem from './ingredient-list-item';
+import auth from '../../stores/auth';
 
 import {colors, dims} from '../../styles/global-styles';
+
+let recipeContext, drawerHandlerPtr, deleteRecipePtr;
 
 class RecipeContainer extends Component {
     constructor(props) {
         super(props);
+
+        drawerHandlerPtr = this._handleDrawer;
+        deleteRecipePtr = this._deleteRecipe;
+        recipeContext = this;
+
         this.state = {
             drawerOpen: false
         };
+    }
+
+    _handleDrawer() {
+        if (this.state.drawerOpen) {
+            this.setState({drawerOpen: false});
+            this.refs['DRAWER_REF'].openDrawer();
+        } else {
+            this.setState({drawerOpen: true});
+            this.refs['DRAWER_REF'].closeDrawer();
+        }
+    }
+
+    _deleteRecipe() {
+        this.dialogbox.confirm({
+            content: 'Delete recipe?',
+            ok: {
+                text: 'Yes',
+                callback: () => {
+                    AsyncStorage.getItem(auth.getUserUid() + '/recipes')
+                        .then((value) => {
+                            let arr = JSON.parse(value);
+
+                            // Find and remove element from array
+                            let index = this._findElement(arr, 'name', this.props.name);
+                            if (index > -1) {
+                                arr.splice(index, 1);
+                            }
+
+                            AsyncStorage.setItem(auth.getUserUid() + '/recipes', JSON.stringify(arr))
+                                .then(Events.trigger('RECIPES_UPDATE'))
+                                .done();
+                        })
+                        .catch(() => {
+                            // AsyncStorage.setItem(auth.getUserUid() + '/recipes', JSON.stringify([]))
+                            //     .then(Events.trigger('RECIPES_UPDATE'))
+                            //     .done();
+                        }).done();
+
+                    this.props.navigator.pop();
+                }
+            },
+            cancel: {
+                text: 'No'
+            }
+        });
+    }
+
+    _findElement(arr, propName, propValue) {
+        let val = -1;
+        arr.forEach((v, i) => {
+            if (v[propName] === propValue) {
+                val = i;
+            }
+        });
+
+        return val;
     }
 
     render() {
@@ -34,7 +101,7 @@ class RecipeContainer extends Component {
                 ref={'DRAWER_REF'}
                 drawerWidth={300}
                 drawerPosition={DrawerLayoutAndroid.positions.Left}
-                renderNavigationView={() => <ControlPanel user={this.props.user} navigator={this.props.navigator} />}>
+                renderNavigationView={() => <ControlPanel user={this.props.user} navigator={this.props.navigator}/>}>
                 <View style={{marginTop: dims.height * 0.1}}/>
                 <ScrollView style={styles.body}>
                     <Text style={[styles.text, {flex: 1, margin: 10}]}>{this.props.name}</Text>
@@ -46,16 +113,34 @@ class RecipeContainer extends Component {
                     <Text style={styles.smallText}>Instructions:</Text>
                     <Text style={styles.smallText}>{this.props.instructions}</Text>
                 </ScrollView>
+
+                <DialogBox ref={(dialogbox) => {
+                    this.dialogbox = dialogbox
+                }}/>
             </DrawerLayoutAndroid>
         )
     }
 }
 
 function leftButtonFunc(route, navigator, index, navState) {
-    return <Icon name='bars' size={30} color={colors.parchmentLight}/>
+    return (
+        <TouchableHighlight
+            underlayColor='transparent'
+            style={styles.navButton}
+            onPress={drawerHandlerPtr.bind(recipeContext)}>
+            <Icon name='bars' size={30} color={colors.parchmentLight} style={{margin: 0, padding: 0}}/>
+        </TouchableHighlight>
+    )
 }
 function rightButtonFunc(route, navigator, index, navState) {
-    return <Icon name='plus' size={30} color={colors.parchmentLight}/>
+    return (
+        <TouchableHighlight
+            underlayColor='transparent'
+            style={styles.navButton}
+            onPress={deleteRecipePtr.bind(recipeContext)}>
+            <Icon name='remove' size={30} color={colors.parchmentLight} style={{margin: 0, padding: 0}}/>
+        </TouchableHighlight>
+    )
 }
 
 const styles = StyleSheet.create({
@@ -74,6 +159,11 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     navBarButton: {
+        backgroundColor: 'transparent',
+        margin: 0,
+        padding: 0
+    },
+    navButton: {
         backgroundColor: 'transparent',
         margin: 0,
         padding: 0

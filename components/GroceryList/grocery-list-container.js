@@ -10,50 +10,6 @@ import {recipeRouteMaker} from '../Recipe/recipe-container';
 
 import {colors, dims} from '../../styles/global-styles';
 
-// TODO Remove when switching to remote data fetching
-const recipes = [
-    {
-        name: 'Lettuce Salad',
-        category: 'Salad',
-        servings: 4,
-        time: 15,
-        difficulty: 'Medium',
-        ingredientsArray: [
-            {
-                unit: 'Kg',
-                amount: '1',
-                name: 'Lettuce'
-            },
-            {
-                unit: 'Gram',
-                amount: '20',
-                name: 'Salt'
-            }
-        ],
-        instructions: 'cut lettuce\nput in bowl\nadd salt\neat!',
-        id: 1,
-        num: 2,
-    },
-    {
-        name: 'Steak',
-        category: 'Meat',
-        servings: 2,
-        time: 30,
-        difficulty: 'Medium',
-        id: 2,
-        num: 1,
-    },
-    {
-        name: 'Ice Cream',
-        category: 'Dessert',
-        servings: 3,
-        time: 5,
-        difficulty: 'Medium',
-        id: 3,
-        num: 4,
-    },
-];
-
 let groceryListContext, drawerHandlerPtr, toggleViewPtr;
 
 class GroceryListContainer extends Component {
@@ -66,7 +22,7 @@ class GroceryListContainer extends Component {
 
         this.state = {
             view: 'recipe',
-            recipes: recipes,
+            recipes: [],
         };
         // TODO Set state from localStorage + props?
     }
@@ -178,6 +134,7 @@ class GroceryListContainer extends Component {
                         <Text style={styles.headline}>Recipes</Text>
 
                         <ScrollableList data={this.state.recipes}
+                                        enableEmptySections={true}
                                         renderRow={(data) => <GroceryListRecipeItem recipe={data}
                                                                                     num={data.num}
                                                                                     increase={this._increase.bind(this)}

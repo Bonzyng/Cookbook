@@ -60,13 +60,12 @@ class AddRecipeContainer extends Component {
                     let arr = JSON.parse(value);
                     arr.push(this.state);
                     AsyncStorage.setItem(auth.getUserUid() + '/recipes', JSON.stringify(arr))
-                        .then(Events.trigger('ADD_RECIPE'))
+                        .then(Events.trigger('RECIPES_UPDATE'))
                         .done();
                 })
-                .catch((error) => {
-                    alert(error);
+                .catch(() => {
                     AsyncStorage.setItem(auth.getUserUid() + '/recipes', JSON.stringify([this.state]))
-                        .then(Events.trigger('ADD_RECIPE'))
+                        .then(Events.trigger('RECIPES_UPDATE'))
                         .done();
                 }).done();
 

@@ -24,11 +24,11 @@ class RecipeList extends Component {
     componentDidMount() {
         this._getRecipes();
 
-        Events.on('ADD_RECIPE', listenerId, this._getRecipes);
+        Events.on('RECIPES_UPDATE', listenerId, this._getRecipes);
     }
 
     componentWillUnmount() {
-        Events.rm('ADD_RECIPE', listenerId);
+        Events.rm('RECIPES_UPDATE', listenerId);
     }
 
     _navigateToRecipe(recipe) {
@@ -54,6 +54,7 @@ class RecipeList extends Component {
     // TODO use renderSeparator and height: StyleSheet.hairlineWidth. See https://medium.com/@spencer_carli/react-native-basics-how-to-use-the-listview-component-a0ec44cf1fe8#.8qrpnww2h
     render() {
         return <ScrollableList style={{backgroundColor: colors.parchmentLight}} data={this.state.recipes}
+                               enableEmptySections={true}
                                renderRow={(data) => <RecipeListItem recipe={data}
                                                                     navigateTo={this._navigateToRecipe.bind(this)}/>}/>
     }

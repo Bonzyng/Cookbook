@@ -74,7 +74,7 @@ function rightButtonFunc(route, navigator, index, navState) {
             underlayColor='transparent'
             style={styles.button}
             onPress={() => alert('I do nothing')}>
-            <Icon name='plus' size={30} color={colors.parchmentLight}/>
+            <Icon name='list' size={30} color={colors.parchmentLight}/>
         </TouchableHighlight>
     )
 }

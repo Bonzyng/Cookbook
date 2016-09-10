@@ -75,6 +75,7 @@ class AddIngredient extends Component {
                             <View style={[styles.row, {width: dims.width * 0.5}]}>
                                 <Text style={styles.text}>Amount: </Text>
                                 <TextInput style={styles.textInput}
+                                           keyboardType={'numeric'}
                                            onChangeText={(amount) => this.setState({amount})}
                                            value={this.state.amount}/>
                             </View>
