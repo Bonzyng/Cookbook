@@ -115,32 +115,32 @@ class RecipeList extends Component {
         }
 
         if (recipes.length > 0) {
-            // AsyncStorage.getItem(auth.getUserUid() + '/grocery_list')
-            //     .then((value) => {
-            //         let arr = JSON.parse(value);
-            //
-            //         let updatedList = [];
-            //
-            //         arr.forEach((e) => {
-            //             let shared = false;
-            //             for (let i = 0; i < recipes.length && !shared; i++) {
-            //                 shared = e.name === recipes[i].name;
-            //             }
-            //
-            //             if (!shared) updatedList.push(e);
-            //         });
-            //
-            //         updatedList = updatedList.concat(recipes);
-            //
-            //         AsyncStorage.setItem(auth.getUserUid() + '/grocery_list', JSON.stringify(updatedList))
-            //             .then(Events.trigger('GROCERY_LIST_UPDATE'))
-            //             .done();
-            //     })
-            //     .catch(() => {
-            //         AsyncStorage.setItem(auth.getUserUid() + '/grocery_list', JSON.stringify(recipes))
-            //             .then(Events.trigger('GROCERY_LIST_UPDATE'))
-            //             .done();
-            //     }).done();
+            AsyncStorage.getItem(auth.getUserUid() + '/grocery_list')
+                .then((value) => {
+                    let arr = JSON.parse(value);
+
+                    let updatedList = [];
+
+                    arr.forEach((e) => {
+                        let shared = false;
+                        for (let i = 0; i < recipes.length && !shared; i++) {
+                            shared = e.name === recipes[i].name;
+                        }
+
+                        if (!shared) updatedList.push(e);
+                    });
+
+                    updatedList = updatedList.concat(recipes);
+
+                    AsyncStorage.setItem(auth.getUserUid() + '/grocery_list', JSON.stringify(updatedList))
+                        .then(Events.trigger('GROCERY_LIST_UPDATE'))
+                        .done();
+                })
+                .catch(() => {
+                    AsyncStorage.setItem(auth.getUserUid() + '/grocery_list', JSON.stringify(recipes))
+                        .then(Events.trigger('GROCERY_LIST_UPDATE'))
+                        .done();
+                }).done();
             this.props.navigator.push(createGroceryListRoute())
         } else {
             this._setModalVisible(true)
@@ -166,8 +166,7 @@ class RecipeList extends Component {
                     visible={this.state.modalVisible}
                     onRequestClose={() => {
                         this._setModalVisible(false)
-                    }}
-                >
+                    }}>
                     <View style={[styles.container, {backgroundColor: 'rgba(0, 0, 0, 0.5)'}]}>
                         <View style={[styles.innerContainer, {backgroundColor: colors.parchmentLight, padding: 20}]}>
                             <Text style={styles.alertText}>No recipes selected!</Text>

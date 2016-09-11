@@ -65,9 +65,7 @@ class RecipeContainer extends Component {
                                 .done();
                         })
                         .catch(() => {
-                            // AsyncStorage.setItem(auth.getUserUid() + '/recipes', JSON.stringify([]))
-                            //     .then(Events.trigger('RECIPES_UPDATE'))
-                            //     .done();
+                            // Do nothing
                         }).done();
 
                     this.props.navigator.pop();

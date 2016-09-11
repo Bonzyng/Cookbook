@@ -7,54 +7,10 @@ import Route from '../Navigation/route';
 import ControlPanel from '../Navigation/control-panel';
 import GroceryListRecipeItem from './grocery-list-item-recipe';
 import GroceryListIngredientItem from './grocery-list-item-ingredient';
+import auth from '../../stores/auth';
 import {createRecipeRoute} from '../Recipe/recipe-container';
 
 import {colors, dims} from '../../styles/global-styles';
-
-// TODO Remove when switching to remote data fetching
-const recipes = [
-    {
-        name: 'Lettuce Salad',
-        category: 'Salad',
-        servings: 4,
-        time: 15,
-        difficulty: 'Medium',
-        ingredientsArray: [
-            {
-                unit: 'Kg',
-                amount: '1',
-                name: 'Lettuce'
-            },
-            {
-                unit: 'Gram',
-                amount: '20',
-                name: 'Salt'
-            }
-        ],
-        instructions: 'cut lettuce\nput in bowl\nadd salt\neat!',
-        id: 1,
-        num: 3,
-    },
-    {
-        name: 'Steak',
-        category: 'Meat',
-        servings: 2,
-        time: 30,
-        difficulty: 'Medium',
-        id: 2,
-        num: 2,
-    },
-    {
-        name: 'Ice Cream',
-        category: 'Dessert',
-        servings: 3,
-        time: 5,
-        difficulty: 'Medium',
-        id: 3,
-        num: 1,
-    },
-];
-
 
 let groceryListContext, drawerHandlerPtr, toggleViewPtr;
 
@@ -73,9 +29,8 @@ class GroceryListContainer extends Component {
 
         this.state = {
             view: views.recipe,
-            recipes: recipes,
+            recipes: [],
         };
-        // TODO Set state from localStorage + props?
     }
 
     _handleDrawer() {
@@ -92,21 +47,27 @@ class GroceryListContainer extends Component {
         this.setState({
             view: this.state.view === views.recipe ? views.ingredient : views.recipe,
         })
+
+        if (this.state.view === views.ingredient) {
+            // TODO Calculate ingredients
+        }
     }
 
-    _makeGroceryList(items) {
-
-    }
-
-    _setInitialValues() {
-        let currentList = {};
-
-        AsyncStorage.getItem('groceryList')
+    componentDidMount() {
+        AsyncStorage.getItem(auth.getUserUid() + '/grocery_list')
             .then((value) => {
-                currentList = value;
-            }).done();
+                this.setState({
+                    recipes: JSON.parse(value)
+                });
+            })
+            .catch(() => {
+                // TODO Show some empty meme? :o
+            })
+            .done();
+    }
 
-        AsyncStorage.setItem()
+    componentWillUnmount() {
+        // TODO Update storage with current recipe list
     }
 
     _navigateToRecipe(recipe) {
