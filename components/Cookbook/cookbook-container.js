@@ -17,7 +17,7 @@ import ControlPanel from '../Navigation/control-panel';
 import RecipeList from './recipe-list';
 import {colors, dims} from '../../styles/global-styles';
 
-let drawerHandlerPtr, cookbookContext;
+let drawerHandlerPtr, fetchGroceryListPtr, cookbookContext;
 
 class CookbookContainer extends Component {
     constructor(props) {
@@ -26,6 +26,7 @@ class CookbookContainer extends Component {
             drawerOpen: false
         };
         drawerHandlerPtr = this._handleDrawer;
+        fetchGroceryListPtr = this._fetchGroceryList;
         cookbookContext = this;
     }
 
@@ -39,6 +40,10 @@ class CookbookContainer extends Component {
         }
     }
 
+    _fetchGroceryList() {
+        this.refs['RECIPE_LIST_REF'].fetchGroceryList();
+    }
+
     render() {
         return (
             <DrawerLayoutAndroid
@@ -47,7 +52,7 @@ class CookbookContainer extends Component {
                 drawerPosition={DrawerLayoutAndroid.positions.Left}
                 renderNavigationView={() => <ControlPanel user={this.props.user} navigator={this.props.navigator} />}>
                 <View style={{marginTop: dims.height * 0.1}}/>
-                <RecipeList navigator={this.props.navigator}/>
+                <RecipeList navigator={this.props.navigator} ref={'RECIPE_LIST_REF'}/>
                 <ActionButton
                     buttonColor={colors.leather}
                     icon={<Icon name='plus' size={25} color={colors.parchmentLight}/>}
@@ -73,7 +78,7 @@ function rightButtonFunc(route, navigator, index, navState) {
         <TouchableHighlight
             underlayColor='transparent'
             style={styles.button}
-            onPress={() => alert('I do nothing')}>
+            onPress={fetchGroceryListPtr.bind(cookbookContext)}>
             <Icon name='list' size={30} color={colors.parchmentLight}/>
         </TouchableHighlight>
     )

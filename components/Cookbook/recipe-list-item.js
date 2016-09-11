@@ -36,6 +36,12 @@ class RecipeListItem extends Component {
         })
     }
 
+    fetchData() {
+        let recipe = this.props.recipe;
+        recipe['num'] = this.state.num;
+        return recipe;
+    }
+
     // TODO Limit text lengths so we don't wrap and exist the item area
     render() {
         return (

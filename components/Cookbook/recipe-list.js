@@ -18,11 +18,17 @@ class RecipeList extends Component {
             recipes: []
         };
 
+        this.rows = [];
+
         this._getRecipes = this._getRecipes.bind(this);
     }
 
     componentDidMount() {
         this._getRecipes();
+
+        if (!this.rows) {
+            this.rows = [];
+        }
 
         Events.on('RECIPES_UPDATE', listenerId, this._getRecipes);
     }
@@ -51,12 +57,24 @@ class RecipeList extends Component {
             }).done();
     }
 
+    fetchGroceryList() {
+        let recipes = [];
+        if (this.rows) {
+            this.rows.forEach((e) => {
+                recipes.push(e.fetchData());
+            })
+        }
+
+        alert(JSON.stringify(recipes));
+    }
+
     // TODO use renderSeparator and height: StyleSheet.hairlineWidth. See https://medium.com/@spencer_carli/react-native-basics-how-to-use-the-listview-component-a0ec44cf1fe8#.8qrpnww2h
     render() {
         return <ScrollableList style={{backgroundColor: colors.parchmentLight}} data={this.state.recipes}
                                enableEmptySections={true}
-                               renderRow={(data) => <RecipeListItem recipe={data}
-                                                                    navigateTo={this._navigateToRecipe.bind(this)}/>}/>
+                               renderRow={(data, section, index) => <RecipeListItem recipe={data}
+                                                                                    ref={(row) => this.rows[index] = row}
+                                                                                    navigateTo={this._navigateToRecipe.bind(this)}/>}/>
     }
 }
 
