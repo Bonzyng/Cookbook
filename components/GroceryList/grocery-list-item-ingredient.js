@@ -27,8 +27,10 @@ class GroceryListIngredientItem extends Component {
                         textDecorationLine: !this.state.checked ? 'line-through' : 'none'
                     })}
                     underlayColor={colors.parchmentLight}/>
-                <Text style={[styles.text, {textDecorationLine: this.state.textDecorationLine}]}>
+                <Text style={[styles.text, {textDecorationLine: this.state.textDecorationLine, flex: 1}]}>
                     {this.props.name}</Text>
+                <Text style={[styles.text, {textDecorationLine: this.state.textDecorationLine, textAlign: 'right', flex: 1, paddingRight: dims.width * 0.05}]}>
+                    {this.props.amount} {this.props.unit}</Text>
             </View>
         );
     }
