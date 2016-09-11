@@ -202,8 +202,8 @@ const styles = StyleSheet.create({
     }
 });
 
-let recipeRouteMaker = function (props) {
+let createRecipeRoute = function (props) {
     return new Route(3, 'Recipe', 'recipe', <RecipeContainer {...props} />, leftButtonFunc, rightButtonFunc);
 };
 
-export {recipeRouteMaker};
+export {createRecipeRoute};

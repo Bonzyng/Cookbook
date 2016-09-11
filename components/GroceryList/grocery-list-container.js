@@ -7,7 +7,7 @@ import Route from '../Navigation/route';
 import ControlPanel from '../Navigation/control-panel';
 import GroceryListRecipeItem from './grocery-list-item-recipe';
 import GroceryListIngredientItem from './grocery-list-item-ingredient';
-import {recipeRouteMaker} from '../Recipe/recipe-container';
+import {createRecipeRoute} from '../Recipe/recipe-container';
 
 import {colors, dims} from '../../styles/global-styles';
 
@@ -72,7 +72,7 @@ class GroceryListContainer extends Component {
         drawerHandlerPtr = this._handleDrawer;
 
         this.state = {
-            view: views.ingredient,
+            view: views.recipe,
             recipes: recipes,
         };
         // TODO Set state from localStorage + props?
@@ -111,7 +111,7 @@ class GroceryListContainer extends Component {
 
     _navigateToRecipe(recipe) {
         this.props.navigator.push(
-            recipeRouteMaker(recipe)
+            createRecipeRoute(recipe)
         )
     }
 
