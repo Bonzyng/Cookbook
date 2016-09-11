@@ -6,11 +6,62 @@ import ScrollableList from 'react-native-scrollable-list';
 import Route from '../Navigation/route';
 import ControlPanel from '../Navigation/control-panel';
 import GroceryListRecipeItem from './grocery-list-item-recipe';
+import GroceryListIngredientItem from './grocery-list-item-ingredient';
 import {recipeRouteMaker} from '../Recipe/recipe-container';
 
 import {colors, dims} from '../../styles/global-styles';
 
+// TODO Remove when switching to remote data fetching
+const recipes = [
+    {
+        name: 'Lettuce Salad',
+        category: 'Salad',
+        servings: 4,
+        time: 15,
+        difficulty: 'Medium',
+        ingredientsArray: [
+            {
+                unit: 'Kg',
+                amount: '1',
+                name: 'Lettuce'
+            },
+            {
+                unit: 'Gram',
+                amount: '20',
+                name: 'Salt'
+            }
+        ],
+        instructions: 'cut lettuce\nput in bowl\nadd salt\neat!',
+        id: 1,
+        num: 3,
+    },
+    {
+        name: 'Steak',
+        category: 'Meat',
+        servings: 2,
+        time: 30,
+        difficulty: 'Medium',
+        id: 2,
+        num: 2,
+    },
+    {
+        name: 'Ice Cream',
+        category: 'Dessert',
+        servings: 3,
+        time: 5,
+        difficulty: 'Medium',
+        id: 3,
+        num: 1,
+    },
+];
+
+
 let groceryListContext, drawerHandlerPtr, toggleViewPtr;
+
+const views = {
+    recipe: 1,
+    ingredient: 2,
+};
 
 class GroceryListContainer extends Component {
     constructor(props) {
@@ -21,8 +72,8 @@ class GroceryListContainer extends Component {
         drawerHandlerPtr = this._handleDrawer;
 
         this.state = {
-            view: 'recipe',
-            recipes: [],
+            view: views.ingredient,
+            recipes: recipes,
         };
         // TODO Set state from localStorage + props?
     }
@@ -39,7 +90,7 @@ class GroceryListContainer extends Component {
 
     _toggleView() {
         this.setState({
-            view: this.state.view === 'recipe' ? 'ingredient' : 'recipe',
+            view: this.state.view === views.recipe ? views.ingredient : views.recipe,
         })
     }
 
@@ -120,42 +171,49 @@ class GroceryListContainer extends Component {
         return val;
     }
 
+    _getIngredients() {
+        return [
+            {
+                unit: 'Kg',
+                amount: '1',
+                name: 'Lettuce'
+            },
+            {
+                unit: 'Gram',
+                amount: '20',
+                name: 'Salt'
+            }
+        ];
+    }
+
     render() {
         return (
-            this.state.view === 'recipe' ?
-                <DrawerLayoutAndroid
-                    ref={'DRAWER_REF'}
-                    drawerWidth={300}
-                    drawerPosition={DrawerLayoutAndroid.positions.Left}
-                    renderNavigationView={() => <ControlPanel user={this.props.user}
-                                                              navigator={this.props.navigator}/>}>
-                    <View style={{marginTop: dims.height * 0.1}}/>
-                    <View style={styles.body}>
-                        <Text style={styles.headline}>Recipes</Text>
+            <DrawerLayoutAndroid
+                ref={'DRAWER_REF'}
+                drawerWidth={300}
+                drawerPosition={DrawerLayoutAndroid.positions.Left}
+                renderNavigationView={() => <ControlPanel user={this.props.user}
+                                                          navigator={this.props.navigator}/>}>
+                <View style={{marginTop: dims.height * 0.1}}/>
+                <View style={styles.body}>
+                    <Text style={styles.headline}>{this.state.view === views.recipe ? 'Recipes' : 'Ingredients'}</Text>
 
-                        <ScrollableList data={this.state.recipes}
-                                        enableEmptySections={true}
-                                        renderRow={(data) => <GroceryListRecipeItem recipe={data}
-                                                                                    num={data.num}
-                                                                                    increase={this._increase.bind(this)}
-                                                                                    decrease={this._decrease.bind(this)}
-                                                                                    removeRecipe={this._removeRecipe.bind(this)}
-                                                                                    navigateTo={this._navigateToRecipe.bind(this)}/>}
-                        />
-                    </View>
-                </DrawerLayoutAndroid>
-                :
-                <DrawerLayoutAndroid
-                    ref={'DRAWER_REF'}
-                    drawerWidth={300}
-                    drawerPosition={DrawerLayoutAndroid.positions.Left}
-                    renderNavigationView={() => <ControlPanel user={this.props.user}
-                                                              navigator={this.props.navigator}/>}>
-                    <View style={{marginTop: dims.height * 0.1}}/>
-                    <View style={styles.body}>
-                        <Text style={styles.headline}>Ingredients</Text>
-                    </View>
-                </DrawerLayoutAndroid>
+                    <ScrollableList
+                        data={this.state.view === views.recipe ? this.state.recipes : this._getIngredients()}
+                        enableEmptySections={true}
+                        renderRow={(data) =>
+                            this.state.view === views.recipe ?
+                                <GroceryListRecipeItem recipe={data}
+                                                       num={data.num}
+                                                       increase={this._increase.bind(this)}
+                                                       decrease={this._decrease.bind(this)}
+                                                       removeRecipe={this._removeRecipe.bind(this)}
+                                                       navigateTo={this._navigateToRecipe.bind(this)}/>
+                                :
+                                <GroceryListIngredientItem {...data} />}
+                    />
+                </View>
+            </DrawerLayoutAndroid>
         )
     }
 }
