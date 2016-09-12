@@ -12,12 +12,7 @@ import {
 
 import {dims, colors} from '../../styles/global-styles';
 import Button from './../Button/button';
-
-const ingredientUnits = {
-    kg: 'Kg',
-    gram: 'Grams',
-    unit: 'Units'
-};
+import IngredientUnits from './ingredient-units';
 
 class AddIngredient extends Component {
     constructor(props) {
@@ -47,7 +42,7 @@ class AddIngredient extends Component {
         this.setState({
             name: '',
             amount: '',
-            unit: ingredientUnits.kg
+            unit: IngredientUnits.kg
         });
 
         this.setModalVisible(false);
@@ -85,9 +80,9 @@ class AddIngredient extends Component {
                                     mode='dropdown'
                                     selectedValue={this.state.unit}
                                     onValueChange={(unit) => this.setState({unit})}>
-                                <Picker.Item label={ingredientUnits.kg} value={ingredientUnits.kg}/>
-                                <Picker.Item label={ingredientUnits.gram} value={ingredientUnits.gram}/>
-                                <Picker.Item label={ingredientUnits.unit} value={ingredientUnits.unit}/>
+                                <Picker.Item label={IngredientUnits.kg} value={IngredientUnits.kg}/>
+                                <Picker.Item label={IngredientUnits.gram} value={IngredientUnits.gram}/>
+                                <Picker.Item label={IngredientUnits.unit} value={IngredientUnits.unit}/>
                             </Picker>
 
                             <Button

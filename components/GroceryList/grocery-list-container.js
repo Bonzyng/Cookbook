@@ -7,6 +7,7 @@ import Route from '../Navigation/route';
 import ControlPanel from '../Navigation/control-panel';
 import GroceryListRecipeItem from './grocery-list-item-recipe';
 import GroceryListIngredientItem from './grocery-list-item-ingredient';
+import IngredientUnits from '../Recipe/ingredient-units';
 import auth from '../../stores/auth';
 import {createRecipeRoute} from '../Recipe/recipe-container';
 
@@ -30,6 +31,7 @@ class GroceryListContainer extends Component {
         this.state = {
             view: views.recipe,
             recipes: [],
+            ingredients: {},
         };
     }
 
@@ -44,17 +46,19 @@ class GroceryListContainer extends Component {
     }
 
     _toggleView() {
+        if (this.state.view === views.recipe) {
+            this._extrapolateIngredients();
+        } else if (this.state.view === views.ingredient) {
+            this._setIngredients();
+        }
+
         this.setState({
             view: this.state.view === views.recipe ? views.ingredient : views.recipe,
-        })
-
-        if (this.state.view === views.ingredient) {
-            // TODO Calculate ingredients
-        }
+        });
     }
 
     componentDidMount() {
-        AsyncStorage.getItem(auth.getUserUid() + '/grocery_list')
+        AsyncStorage.getItem(auth.getUserUid() + '/grocery_list/recipes')
             .then((value) => {
                 this.setState({
                     recipes: JSON.parse(value)
@@ -67,7 +71,8 @@ class GroceryListContainer extends Component {
     }
 
     componentWillUnmount() {
-        // TODO Update storage with current recipe list
+        AsyncStorage.setItem(auth.getUserUid() + '/grocery_list/recipes', JSON.stringify(this.state.recipes))
+            .then().done();
     }
 
     _navigateToRecipe(recipe) {
@@ -121,6 +126,19 @@ class GroceryListContainer extends Component {
         });
     }
 
+    _toggleChecked(ingredient, callerUpdate) {
+        let ingredients = this.state.ingredients;
+        if (this.state.ingredients.hasOwnProperty(ingredient)) {
+            ingredients[ingredient].checked = !ingredients[ingredient].checked;
+
+            callerUpdate(ingredients[ingredient].checked);
+
+            this.setState({
+                ingredients
+            });
+        }
+    }
+
     _findElement(arr, propName, propValue) {
         let val = -1;
         arr.forEach((v, i) => {
@@ -133,18 +151,77 @@ class GroceryListContainer extends Component {
     }
 
     _getIngredients() {
-        return [
-            {
-                unit: 'Kg',
-                amount: '1',
-                name: 'Lettuce'
-            },
-            {
-                unit: 'Gram',
-                amount: '20',
-                name: 'Salt'
+        let arr = [];
+        for (var key in this.state.ingredients) {
+            if (this.state.ingredients.hasOwnProperty(key)) {
+                arr.push({
+                    name: key,
+                    unit: this.state.ingredients[key].unit,
+                    amount: this.state.ingredients[key].amount,
+                    checked: this.state.ingredients[key].checked,
+                })
             }
-        ];
+        }
+
+        return arr;
+    }
+
+    _extrapolateIngredients() {
+        let updatedIngredients = {};
+        this.state.recipes.forEach((recipe) => {
+            recipe.ingredientsArray.forEach((ingredient) => {
+                if (ingredient.name in updatedIngredients) {
+                    updatedIngredients[ingredient.name] =
+                        this._combineIngredients(ingredient, updatedIngredients[ingredient.name], parseInt(recipe.num));
+                } else {
+                    updatedIngredients[ingredient.name] = {
+                        unit: ingredient.unit,
+                        amount: parseInt(ingredient.amount) * parseInt(recipe.num),
+                        checked: false,
+                    }
+                }
+            })
+        });
+
+        this.setState({
+            ingredients: updatedIngredients
+        })
+    }
+
+    _setIngredients() {
+
+    }
+
+    _combineIngredients(thisIngredient, otherIngredient, multiplier) {
+        let res = {
+            checked: false,
+        };
+
+        if (thisIngredient.unit === otherIngredient.unit) {
+            res['unit'] = thisIngredient.unit;
+            res['amount'] = parseInt(thisIngredient.amount) * multiplier + parseInt(otherIngredient.amount);
+        } else {
+            res['unit'] = thisIngredient.unit;
+
+            if (thisIngredient.unit === IngredientUnits.kg && otherIngredient.unit === IngredientUnits.gram) {
+                res['amount'] = parseInt(thisIngredient.amount) + this._gramToKg(parseInt(otherIngredient.amount));
+            } else if (thisIngredient.unit === IngredientUnits.gram && otherIngredient.unit === IngredientUnits.kg) {
+                res['amount'] = parseInt(thisIngredient.amount) + this._kgToGram(parseInt(otherIngredient.amount));
+            } else {
+                // One is unit and the other is kg/gram, so fuck it let's party
+                res['amount'] = thisIngredient.amount * 2;
+            }
+        }
+
+        return res;
+    }
+
+    _gramToKg(num) {
+        return num / 1000.0;
+    }
+
+    _kgToGram(num) {
+        return num * 1000;
     }
 
     render() {
@@ -171,7 +248,7 @@ class GroceryListContainer extends Component {
                                                        removeRecipe={this._removeRecipe.bind(this)}
                                                        navigateTo={this._navigateToRecipe.bind(this)}/>
                                 :
-                                <GroceryListIngredientItem {...data} />}
+                                <GroceryListIngredientItem {...data} toggleChecked={this._toggleChecked.bind(this)}/>}
                     />
                 </View>
             </DrawerLayoutAndroid>

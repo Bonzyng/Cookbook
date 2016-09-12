@@ -115,7 +115,7 @@ class RecipeList extends Component {
         }
 
         if (recipes.length > 0) {
-            AsyncStorage.getItem(auth.getUserUid() + '/grocery_list')
+            AsyncStorage.getItem(auth.getUserUid() + '/grocery_list/recipes')
                 .then((value) => {
                     let arr = JSON.parse(value);
 
@@ -132,16 +132,21 @@ class RecipeList extends Component {
 
                     updatedList = updatedList.concat(recipes);
 
-                    AsyncStorage.setItem(auth.getUserUid() + '/grocery_list', JSON.stringify(updatedList))
-                        .then(Events.trigger('GROCERY_LIST_UPDATE'))
+                    AsyncStorage.setItem(auth.getUserUid() + '/grocery_list/recipes', JSON.stringify(updatedList))
+                        .then(() => {
+                            Events.trigger('GROCERY_LIST_UPDATE');
+                            this.props.navigator.push(createGroceryListRoute())
+                        })
                         .done();
                 })
                 .catch(() => {
-                    AsyncStorage.setItem(auth.getUserUid() + '/grocery_list', JSON.stringify(recipes))
-                        .then(Events.trigger('GROCERY_LIST_UPDATE'))
+                    AsyncStorage.setItem(auth.getUserUid() + '/grocery_list/recipes', JSON.stringify(recipes))
+                        .then(() => {
+                            Events.trigger('GROCERY_LIST_UPDATE');
+                            this.props.navigator.push(createGroceryListRoute())
+                        })
                         .done();
                 }).done();
-            this.props.navigator.push(createGroceryListRoute())
         } else {
             this._setModalVisible(true)
         }

@@ -10,9 +10,16 @@ class GroceryListIngredientItem extends Component {
         super(props);
 
         this.state = {
-            checked: false,
+            checked: this.props.checked,
             textDecorationLine: 'none',
         }
+    }
+
+    setChecked(checked) {
+        this.setState({
+            checked: checked,
+            textDecorationLine: !this.state.checked ? 'line-through' : 'none',
+        })
     }
 
 
@@ -22,10 +29,7 @@ class GroceryListIngredientItem extends Component {
                 <CheckBox
                     label=""
                     checked={this.state.checked}
-                    onChange={() => this.setState({
-                        checked: !this.state.checked,
-                        textDecorationLine: !this.state.checked ? 'line-through' : 'none'
-                    })}
+                    onChange={() => this.props.toggleChecked(this.props.name, this.setChecked.bind(this))}
                     underlayColor={colors.parchmentLight}/>
                 <Text style={[styles.text, {textDecorationLine: this.state.textDecorationLine, flex: 1}]}>
                     {this.props.name}</Text>
